@@ -1,0 +1,10 @@
+package com.example.guessit.di
+
+import android.app.Application
+import com.google.an
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class BaseClass:Application() {
+    //Hilt BaseClass
+}
