@@ -28,12 +28,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.guessit.R
+import com.example.guessit.presentation.Navigation.LOGINSCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
 
 @Composable
@@ -47,7 +50,7 @@ fun SignUpScreen(navController: NavController,viewModel: AppViewModel= hiltViewM
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFAFB8)) // Soft pink background
+            .background(color = colorResource(id = R.color.LightTheme)) // Soft pink background
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -66,7 +69,7 @@ fun SignUpScreen(navController: NavController,viewModel: AppViewModel= hiltViewM
                     text = "Sign Up",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFFD81B60) // Deep pink for title
+                    color =  colorResource(id = R.color.DarkTheme) // Deep pink for title
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -110,22 +113,26 @@ fun SignUpScreen(navController: NavController,viewModel: AppViewModel= hiltViewM
                     shape = RoundedCornerShape(12.dp),
                     elevation = ButtonDefaults.buttonElevation(6.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFD81B60), // Deep pink button
+                        containerColor =colorResource(id = R.color.DarkTheme), // Deep pink button
                         contentColor = Color.White // White text
                     )
                 ) {
-                    Text(text = "Login", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "Sign Up", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 // Signup Text
                 TextButton(
-                    onClick = {  }
+                    onClick = {
+                        navController.navigate(LOGINSCREEN){
+                            popUpTo(0)
+                        }
+                    }
                 ) {
                     Text(
                         text = "Already have an account? Login",
-                        color = Color(0xFFD81B60) // Deep pink text
+                        color = colorResource(id = R.color.DarkTheme) // Deep pink text
                     )
                 }
             }

@@ -29,15 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.guessit.R
+import com.example.guessit.presentation.Navigation.SIGNUPSCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
 fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewModel()) {
@@ -50,7 +51,7 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFFFAFB8)) // Soft pink background
+                .background(color = colorResource(id = R.color.LightTheme)) // Soft pink background
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -69,7 +70,7 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
                         text = "Welcome Back 👋",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFD81B60) // Deep pink for title
+                        color = colorResource(id = R.color.DarkTheme) // Deep pink for title
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -113,7 +114,7 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
                         shape = RoundedCornerShape(12.dp),
                         elevation = ButtonDefaults.buttonElevation(6.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFD81B60), // Deep pink button
+                            containerColor =colorResource(id = R.color.DarkTheme), // Deep pink button
                             contentColor = Color.White // White text
                         )
                     ) {
@@ -124,11 +125,15 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
 
                     // Signup Text
                     TextButton(
-                        onClick = {  }
+                        onClick = {
+                            navController.navigate(SIGNUPSCREEN){
+                                popUpTo(0)
+                            }
+                        }
                     ) {
                         Text(
                             text = "Don't have an account? Sign up",
-                            color = Color(0xFFD81B60) // Deep pink text
+                            color = colorResource(id = R.color.DarkTheme) // Deep pink text
                         )
                     }
                 }
