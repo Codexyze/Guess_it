@@ -1,6 +1,5 @@
 package com.example.guessit.presentation.Screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,17 +38,28 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
+import com.example.guessit.presentation.Navigation.HOMESCREEN
 import com.example.guessit.presentation.Navigation.SIGNUPSCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
+import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
 fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewModel()) {
-
-        val context = LocalContext.current
-
-        val email = remember { mutableStateOf("") }
-        val password = remember { mutableStateOf("") }
-
+    val loginState = viewModel.loginState.collectAsState()
+    val context = LocalContext.current
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    if (loginState.value.isLoading) {
+        LoadingBar()
+    } else if (loginState.value.error != null) {
+        TODO()
+    } else if (loginState.value.data != null) {
+        LaunchedEffect(Unit) {
+            navController.navigate(HOMESCREEN) {
+                popUpTo(0)
+            }
+        }
+    } else {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -108,13 +120,24 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
                     // Login Button
                     Button(
                         onClick = {
+                            if (email.value.isNotEmpty() && password.value.isNotEmpty()){
+                                viewModel.login(email = email.value, password = password.value)
+
+                            }else if (password.value.length < 6){
+                                FancyToast.makeText(context,"Password should be of 6 character",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.WARNING,true).show()
+                            }else{
+                                FancyToast.makeText(context,"Enter All Fields",FancyToast.LENGTH_SHORT,FancyToast.WARNING,true).show()
+                            }
+
 
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         elevation = ButtonDefaults.buttonElevation(6.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor =colorResource(id = R.color.DarkTheme), // Deep pink button
+                            containerColor = colorResource(id = R.color.DarkTheme), // Deep pink button
                             contentColor = Color.White // White text
                         )
                     ) {
@@ -126,7 +149,7 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
                     // Signup Text
                     TextButton(
                         onClick = {
-                            navController.navigate(SIGNUPSCREEN){
+                            navController.navigate(SIGNUPSCREEN) {
                                 popUpTo(0)
                             }
                         }
@@ -143,3 +166,4 @@ fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewM
 
         }
     }
+}
