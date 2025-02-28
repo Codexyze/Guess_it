@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
+import com.example.guessit.presentation.Navigation.PAINTSCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
 
 @Composable
@@ -55,7 +56,7 @@ fun HomeScreen(navController: NavController,viewModel: AppViewModel= hiltViewMod
 
 
        OutlinedButton(onClick = {
-           //
+           navController.navigate(PAINTSCREEN)
 
        }, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.10f), shape = RectangleShape,
            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.ThemeLightMatching2))

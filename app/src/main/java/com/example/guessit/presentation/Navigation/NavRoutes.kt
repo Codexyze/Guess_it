@@ -10,3 +10,6 @@ object SIGNUPSCREEN
 
 @Serializable
 object LOGINSCREEN
+
+@Serializable
+object PAINTSCREEN

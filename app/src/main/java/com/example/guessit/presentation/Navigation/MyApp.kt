@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.guessit.presentation.Screens.HomeScreen
 import com.example.guessit.presentation.Screens.LoginScreen
+import com.example.guessit.presentation.Screens.PaintScreen
 import com.example.guessit.presentation.Screens.SignUpScreen
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -39,6 +40,9 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         }
         composable<LOGINSCREEN> {
            LoginScreen(navController = navController)
+        }
+        composable<PAINTSCREEN> {
+            PaintScreen(navController = navController)
         }
 
     }
