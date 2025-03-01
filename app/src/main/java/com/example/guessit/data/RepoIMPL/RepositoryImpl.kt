@@ -1,18 +1,25 @@
 package com.example.guessit.data.RepoIMPL
 
 import android.util.Log
+import com.example.guessit.data.Constants.Constants
 import com.example.guessit.domain.Repository.Repository
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 import javax.inject.Inject
 
-class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth):Repository  {
+class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth,private val firebaseFirestore: FirebaseFirestore):Repository  {
     //repo
     private val currentUserAuth= authInstance.currentUser?.uid?:""
+
     override suspend fun signUpUser(email:String , password:String): Flow<ResultState<String>> = callbackFlow{
         trySend(ResultState.Loading)
        authInstance.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
@@ -42,5 +49,26 @@ class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth):
         awaitClose {
             close()
         }
+    }
+
+    override suspend fun getWordFromServer(): Flow<ResultState<List<String>>> = callbackFlow{
+       trySend(ResultState.Loading)
+        try {
+            firebaseFirestore.collection(Constants.WORDS).document(Constants.LIST).get().addOnSuccessListener {
+                val data = it.data?.get(Constants.WORDSFIELD) as? List<String> ?: emptyList()
+                trySend(ResultState.Success(data))
+            }.addOnFailureListener {
+                trySend(ResultState.Error(it.message.toString()))
+            }
+
+        }catch (e:Exception){
+            trySend(ResultState.Error(e.message.toString()))
+            ///Error handeling
+
+        }
+        awaitClose {
+            close()
+        }
+
     }
 }

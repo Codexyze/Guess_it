@@ -3,6 +3,7 @@ package com.example.guessit.presentation.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.example.guessit.domain.StateHandeling.GetWordFromServerState
 import com.example.guessit.domain.StateHandeling.LoginState
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.example.guessit.domain.StateHandeling.SignUpState
@@ -23,6 +24,8 @@ class AppViewModel @Inject constructor(
         val signUpState = _signUpState.asStateFlow()
        private val _loginState = MutableStateFlow(LoginState())
         val loginState = _loginState.asStateFlow()
+    private val _getWordFromServerState= MutableStateFlow(GetWordFromServerState())
+    val getWordFromServerSate = _getWordFromServerState.asStateFlow()
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -60,6 +63,34 @@ class AppViewModel @Inject constructor(
         }
 
     }
+
+    fun getWordFromServer(){
+        viewModelScope.launch {
+            repositoryImpl.getWordFromServer().collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                        _getWordFromServerState.value = GetWordFromServerState(
+                            isLoading = true
+                        )
+                    }
+                    is ResultState.Error->{
+                        _getWordFromServerState.value =GetWordFromServerState(
+                            isLoading = false, error = result.message
+                        )
+                    }
+                    is ResultState.Success->{
+                        _getWordFromServerState.value =GetWordFromServerState(
+                            isLoading = false,
+                            data = result.data
+                        )
+                    }
+                }
+
+            }
+
+        }
+    }
+
 
 
 }

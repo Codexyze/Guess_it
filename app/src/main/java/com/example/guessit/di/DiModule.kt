@@ -1,7 +1,10 @@
 package com.example.guessit.di
 
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +21,15 @@ object DiModule {
 
     @Provides
     fun provideRepoImplInstnace(authInstance:FirebaseAuth): RepositoryImpl{
-        return RepositoryImpl( authInstance = authInstance)
+        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore())
     }
+
+    @Provides
+    fun providefirebasefirestore():FirebaseFirestore{
+        return FirebaseFirestore.getInstance()
+    }
+
+
 
 
 }

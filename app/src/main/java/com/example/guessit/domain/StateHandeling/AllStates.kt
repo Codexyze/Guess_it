@@ -13,3 +13,9 @@ data class SignUpState(val isLoading:Boolean = false,
 data class LoginState(val isLoading:Boolean = false,
                        val data:String? = null,
                        val error:String? = null)
+
+data class GetWordFromServerState(
+    val isLoading:Boolean =false ,
+    val data:List<String> = emptyList(),
+     val error:String? = null
+)
