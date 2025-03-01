@@ -41,17 +41,13 @@ fun PaintScreen(navController: NavController,viewmodel:AppViewModel= hiltViewMod
                 change.consume()
                 if(colorvalue.value==0){
                     colorVariable = Color.Green
-                    eraserStrokeWidth=10.dp
                 }else if(colorvalue.value == 1){
                     colorVariable = Color.Red
-                    eraserStrokeWidth=10.dp
                 }else if(colorvalue.value == 2){
                     colorVariable = Color.Blue
-                    eraserStrokeWidth=10.dp
 
                 }else if(colorvalue.value == 3){
                     colorVariable = Color.Yellow
-                    eraserStrokeWidth=10.dp
                 }else{
                     colorVariable =Color.White
                     eraserStrokeWidth = 50.dp

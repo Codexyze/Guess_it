@@ -1,0 +1,19 @@
+package com.example.guessit.presentation.ViewModel
+
+import androidx.lifecycle.ViewModel
+import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.example.guessit.domain.StateHandeling.SignUpState
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+
+@HiltViewModel
+class AppViewModel @Inject constructor( private val repositoryImpl: RepositoryImpl,
+                                        private val authInstance:FirebaseAuth):ViewModel ()
+{
+ private val _signUpState = MutableStateFlow(SignUpState())
+    val signUpState = _signUpState.asStateFlow()
+
+}
