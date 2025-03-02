@@ -2,7 +2,6 @@ package com.example.guessit.data.RepoIMPL
 
 import android.util.Log
 import com.example.guessit.data.Constants.Constants
-import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.Repository.Repository
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.google.firebase.auth.FirebaseAuth
@@ -73,13 +72,8 @@ class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth,p
 
     }
 
-    override suspend fun createRoomFromServer(playerData: Player): Flow<ResultState<String>> = callbackFlow{
+    override suspend fun createRoomFromServer(): Flow<ResultState<String>> = callbackFlow{
         trySend(ResultState.Loading)
         firebaseFirestore.collection(Constants.ROOM).document(currentUserAuth)
-            .collection(Constants.PLAYERS).add(playerData).addOnSuccessListener {
-                trySend(ResultState.Success("Room Created"))
-            }.addOnFailureListener {
-                trySend(ResultState.Error("Failed to Create Room"))
-            }
     }
 }

@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.guessit.presentation.Screens.CreateRoomScreen
 import com.example.guessit.presentation.Screens.HomeScreen
 import com.example.guessit.presentation.Screens.LoginScreen
 import com.example.guessit.presentation.Screens.PaintScreen
@@ -43,6 +44,9 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         }
         composable<PAINTSCREEN> {
             PaintScreen(navController = navController)
+        }
+        composable<CREATEROOMSCREEN> {
+            CreateRoomScreen(navController = navController)
         }
 
     }

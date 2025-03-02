@@ -13,3 +13,6 @@ object LOGINSCREEN
 
 @Serializable
 object PAINTSCREEN
+
+@Serializable
+object CREATEROOMSCREEN

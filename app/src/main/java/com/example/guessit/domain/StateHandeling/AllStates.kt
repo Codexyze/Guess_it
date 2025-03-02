@@ -19,3 +19,9 @@ data class GetWordFromServerState(
     val data:List<String> = emptyList(),
      val error:String? = null
 )
+
+data class CreateRoomState(
+    val isLoading:Boolean  = false ,
+    val data:String? = null,
+    val error:String ? = null
+)

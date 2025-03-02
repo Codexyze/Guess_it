@@ -35,32 +35,33 @@ fun HomeScreen(navController: NavController,viewModel: AppViewModel= hiltViewMod
        //
          navController.navigate(CREATEROOMSCREEN)
 
-     }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,
+     }, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RectangleShape,
          colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.ThemeMatchingYellow))
      , elevation =ButtonDefaults.buttonElevation(8.dp)
      ) {
          Text("Create Room", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
      }
-       Spacer(modifier = Modifier.height(16.dp))
+       Spacer(modifier = Modifier.fillMaxHeight(0.05f))
 
 
        OutlinedButton(onClick = {
            //
 
 
-       }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,
+       }, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.10f), shape = RectangleShape,
            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200))
            , elevation =ButtonDefaults.buttonElevation(8.dp)
        ) {
            Text("Join Room", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
        }
 
-       Spacer(modifier = Modifier.height(16.dp))
+       Spacer(modifier = Modifier.fillMaxHeight(0.05f))
+
 
        OutlinedButton(onClick = {
            navController.navigate(PAINTSCREEN)
 
-       }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,
+       }, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.10f), shape = RectangleShape,
            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.ThemeLightMatching2))
            , elevation =ButtonDefaults.buttonElevation(8.dp)
        ) {

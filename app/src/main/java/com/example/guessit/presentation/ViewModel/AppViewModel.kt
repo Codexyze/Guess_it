@@ -3,6 +3,8 @@ package com.example.guessit.presentation.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.example.guessit.data.dataClasses.Player
+import com.example.guessit.domain.StateHandeling.CreateRoomState
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
 import com.example.guessit.domain.StateHandeling.LoginState
 import com.example.guessit.domain.StateHandeling.ResultState
@@ -26,6 +28,8 @@ class AppViewModel @Inject constructor(
         val loginState = _loginState.asStateFlow()
     private val _getWordFromServerState= MutableStateFlow(GetWordFromServerState())
     val getWordFromServerSate = _getWordFromServerState.asStateFlow()
+    private val _createRoomState = MutableStateFlow(CreateRoomState())
+    val createRoomState = _createRoomState.asStateFlow()
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -91,6 +95,23 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    fun createRoom(player:Player){
+        viewModelScope.launch {
+            repositoryImpl.createRoomFromServer(playerData = player).collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                       _createRoomState.value = CreateRoomState(isLoading = true)
+                    }
+                    is ResultState.Success->{
+                        _createRoomState.value = CreateRoomState(isLoading = false,  data = result.data)
+                    }
+                    is ResultState.Error->{
+                        _createRoomState.value = CreateRoomState(isLoading = false, error = result.message)
+                    }
+                }
+            }
+        }
 
+    }
 
 }

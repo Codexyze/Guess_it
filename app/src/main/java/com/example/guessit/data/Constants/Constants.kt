@@ -4,4 +4,6 @@ object Constants {
     const val WORDS ="Words"
     const val LIST = "list"
     const val WORDSFIELD ="words"
+    const val ROOM ="Room"
+    const val PLAYERS="Players"
 }
