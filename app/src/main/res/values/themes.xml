@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.GuessIt" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MySplashScreen" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenBackground">@color/SplashScreenBackground</item>
+        <item name="windowSplashScreenAnimationDuration">5000</item>
+        <item name="postSplashScreenTheme">@style/Theme.GuessIt</item>
+    </style>
 </resources>

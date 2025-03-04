@@ -77,5 +77,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     //Dependency For Extended Icons
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    //SplashScreen
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
 }
