@@ -76,7 +76,7 @@ class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth,p
     override suspend fun createRoomFromServer(playerData: Player): Flow<ResultState<String>> = callbackFlow{
         trySend(ResultState.Loading)
         firebaseFirestore.collection(Constants.ROOM).document(currentUserAuth)
-            .collection(Constants.PLAYERS).add(playerData).addOnSuccessListener {
+            .collection(Constants.PLAYERS).document(currentUserAuth).set(playerData).addOnSuccessListener {
                 trySend(ResultState.Success("Room Created"))
             }.addOnFailureListener {
                 trySend(ResultState.Error("Failed to Create Room"))

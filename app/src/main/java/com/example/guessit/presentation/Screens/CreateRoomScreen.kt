@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.data.dataClasses.Player
+import com.example.guessit.presentation.Navigation.PLAYSCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -47,6 +48,7 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
     LaunchedEffect (createRoomState.value){
         if (createRoomState.value.data != null){
            //navigate to play screen
+            navController.navigate(PLAYSCREEN)
         }
     }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {

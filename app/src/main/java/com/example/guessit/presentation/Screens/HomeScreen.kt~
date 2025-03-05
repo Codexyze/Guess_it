@@ -15,6 +15,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,33 +37,36 @@ fun HomeScreen(navController: NavController,viewModel: AppViewModel= hiltViewMod
        //
          navController.navigate(CREATEROOMSCREEN)
 
-     }, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RectangleShape,
+     }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,
          colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.ThemeMatchingYellow))
      , elevation =ButtonDefaults.buttonElevation(8.dp)
      ) {
          Text("Create Room", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
      }
-       Spacer(modifier = Modifier.fillMaxHeight(0.05f))
+       Spacer(modifier = Modifier.height(16.dp))
 
 
        OutlinedButton(onClick = {
            //
 
 
-       }, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.10f), shape = RectangleShape,
+       }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,
            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.teal_200))
            , elevation =ButtonDefaults.buttonElevation(8.dp)
        ) {
            Text("Join Room", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
        }
 
-       Spacer(modifier = Modifier.fillMaxHeight(0.05f))
-
+       Spacer(modifier = Modifier.height(16.dp))
 
        OutlinedButton(onClick = {
            navController.navigate(PAINTSCREEN)
 
-       }, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.10f), shape = RectangleShape,
+       }, modifier = Modifier.fillMaxWidth().background(
+           brush = Brush.horizontalGradient(
+               colors = listOf(Color(0xFFFF5722), Color(0xFF82BB4C))
+           )
+       ).height(80.dp), shape = RectangleShape,
            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.ThemeLightMatching2))
            , elevation =ButtonDefaults.buttonElevation(8.dp)
        ) {

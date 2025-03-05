@@ -75,5 +75,7 @@ dependencies {
     implementation ("io.github.shashank02051997:FancyToast:2.0.2")
     //Seralization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    //Dependency For Extended Icons
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
 }
