@@ -9,4 +9,5 @@ interface Repository {
     suspend fun loginUser(email:String , password:String):Flow<ResultState<String>>
     suspend fun getWordFromServer():Flow<ResultState<List<String>>>
     suspend fun createRoomFromServer(playerData:Player):Flow<ResultState<String>>
+    suspend fun joinRoomWithID(roomID:String,player: Player):Flow<ResultState<String>>
 }

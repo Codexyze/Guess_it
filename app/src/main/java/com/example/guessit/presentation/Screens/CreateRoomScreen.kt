@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -42,6 +43,11 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         userID.value = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    }
+    LaunchedEffect (createRoomState.value){
+        if (createRoomState.value.data != null){
+           //navigate to play screen
+        }
     }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Copy The Code", fontSize = 28.sp)
@@ -63,7 +69,19 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
         })
         Button(onClick = {
         // call fun from backend
-            FancyToast.makeText(context,"Hello World !",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show()
+            try{
+                val player = Player(
+                    userID = userID.value,
+                    score = 0,
+                    totalGuess = 0,
+                    postion = 0,
+                    userName = userName.value.toString()
+                )
+                viewmodel.createRoom(player = player)
+            }catch (e:Exception){
+
+            }
+
         }) {
             Text("Click t craete Room")
         }

@@ -81,5 +81,21 @@ class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth,p
             }.addOnFailureListener {
                 trySend(ResultState.Error("Failed to Create Room"))
             }
+        awaitClose {
+            close()
+        }
+    }
+
+    override suspend fun joinRoomWithID(roomID: String,player: Player): Flow<ResultState<String>> = callbackFlow{
+       trySend(ResultState.Loading)
+        firebaseFirestore.collection(roomID).document().collection(Constants.PLAYERS).add(player)
+            .addOnSuccessListener {
+                trySend(ResultState.Success("Joined"))
+            }.addOnFailureListener {
+                trySend(ResultState.Error(it.message.toString()))
+            }
+        awaitClose {
+            close()
+        }
     }
 }
