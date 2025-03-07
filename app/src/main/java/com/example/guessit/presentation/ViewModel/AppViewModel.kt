@@ -6,6 +6,7 @@ import com.example.guessit.data.RepoIMPL.RepositoryImpl
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.StateHandeling.CreateRoomState
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
+import com.example.guessit.domain.StateHandeling.JoinRoomState
 import com.example.guessit.domain.StateHandeling.LoginState
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.example.guessit.domain.StateHandeling.SignUpState
@@ -30,6 +31,8 @@ class AppViewModel @Inject constructor(
     val getWordFromServerSate = _getWordFromServerState.asStateFlow()
     private val _createRoomState = MutableStateFlow(CreateRoomState())
     val createRoomState = _createRoomState.asStateFlow()
+    private val _joinRoomState = MutableStateFlow(JoinRoomState())
+    val joinRoomState = _joinRoomState.asStateFlow()
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -112,6 +115,28 @@ class AppViewModel @Inject constructor(
             }
         }
 
+    }
+
+    suspend fun joinRoomUsingUserID(roomID:String ,player:Player){
+        viewModelScope.launch {
+            repositoryImpl.joinRoomWithID(roomID = roomID, player = player).collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                        _joinRoomState.value = JoinRoomState(isLoading = true)
+                    }
+                    is ResultState.Error->{
+                        _joinRoomState.value = JoinRoomState(
+                            isLoading = false , error = result.message
+                        )
+                    }
+                    is ResultState.Success->{
+                        _joinRoomState.value = JoinRoomState(
+                            isLoading = false, data = result.data
+                        )
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.presentation.Navigation.CREATEROOMSCREEN
+import com.example.guessit.presentation.Navigation.JOINSCREEN
 import com.example.guessit.presentation.Navigation.PAINTSCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
 
@@ -46,6 +47,7 @@ fun HomeScreen(navController: NavController,viewModel: AppViewModel= hiltViewMod
 
        OutlinedButton(onClick = {
            //
+           navController.navigate(JOINSCREEN)
 
 
        }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,

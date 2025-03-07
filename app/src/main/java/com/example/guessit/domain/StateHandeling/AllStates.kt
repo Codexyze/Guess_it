@@ -25,3 +25,9 @@ data class CreateRoomState(
     val data:String? = null,
     val error:String ? = null
 )
+
+data class JoinRoomState(
+    val isLoading: Boolean = false,
+    val data: String? =null,
+    val error:String? =null
+)

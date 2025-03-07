@@ -19,3 +19,6 @@ object CREATEROOMSCREEN
 
 @Serializable
 object PLAYSCREEN
+
+@Serializable
+object JOINSCREEN

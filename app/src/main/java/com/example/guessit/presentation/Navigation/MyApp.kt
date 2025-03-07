@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.guessit.presentation.Screens.CreateRoomScreen
 import com.example.guessit.presentation.Screens.HomeScreen
+import com.example.guessit.presentation.Screens.JoinRoomScreen
 import com.example.guessit.presentation.Screens.LoginScreen
 import com.example.guessit.presentation.Screens.PaintScreen
 import com.example.guessit.presentation.Screens.PlayScreen
@@ -51,6 +52,9 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         }
         composable<PLAYSCREEN> {
             PlayScreen(navController = navController)
+        }
+        composable<JOINSCREEN>{
+            JoinRoomScreen(navController = navController)
         }
 
     }
