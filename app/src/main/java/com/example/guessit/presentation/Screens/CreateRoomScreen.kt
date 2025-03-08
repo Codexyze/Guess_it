@@ -48,7 +48,7 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
     LaunchedEffect (createRoomState.value){
         if (createRoomState.value.data != null){
            //navigate to play screen
-            navController.navigate(PLAYSCREEN)
+            navController.navigate(PLAYSCREEN(roomID = userID.value))
         }
     }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {

@@ -10,4 +10,5 @@ interface Repository {
     suspend fun getWordFromServer():Flow<ResultState<List<String>>>
     suspend fun createRoomFromServer(playerData:Player):Flow<ResultState<String>>
     suspend fun joinRoomWithID(roomID:String,player: Player):Flow<ResultState<String>>
+    suspend fun getAllPlayersFromRoom(roomID: String):Flow<ResultState<List<Player>>>
 }

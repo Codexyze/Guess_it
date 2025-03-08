@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.guessit.presentation.Screens.CreateRoomScreen
 import com.example.guessit.presentation.Screens.HomeScreen
 import com.example.guessit.presentation.Screens.JoinRoomScreen
@@ -50,8 +51,9 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         composable<CREATEROOMSCREEN> {
             CreateRoomScreen(navController = navController)
         }
-        composable<PLAYSCREEN> {
-            PlayScreen(navController = navController)
+        composable<PLAYSCREEN> {backstackentry->
+            val data:PLAYSCREEN = backstackentry.toRoute()
+            PlayScreen(navController = navController, roomID = data.roomID)
         }
         composable<JOINSCREEN>{
             JoinRoomScreen(navController = navController)

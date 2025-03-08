@@ -1,5 +1,7 @@
 package com.example.guessit.domain.StateHandeling
 
+import com.example.guessit.data.dataClasses.Player
+
 sealed class ResultState<out T>{
     object Loading : ResultState<Nothing>()
     data class Success<T>(val data : T) : ResultState<T>()
@@ -30,4 +32,11 @@ data class JoinRoomState(
     val isLoading: Boolean = false,
     val data: String? =null,
     val error:String? =null
+)
+
+data class GetAllPlayerInRoomState(
+    val isLoading: Boolean = false,
+    val data:List<Player> = emptyList(),
+    val error:String? =null
+
 )

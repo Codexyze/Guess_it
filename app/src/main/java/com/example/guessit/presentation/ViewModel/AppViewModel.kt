@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.StateHandeling.CreateRoomState
+import com.example.guessit.domain.StateHandeling.GetAllPlayerInRoomState
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
 import com.example.guessit.domain.StateHandeling.JoinRoomState
 import com.example.guessit.domain.StateHandeling.LoginState
@@ -33,6 +34,8 @@ class AppViewModel @Inject constructor(
     val createRoomState = _createRoomState.asStateFlow()
     private val _joinRoomState = MutableStateFlow(JoinRoomState())
     val joinRoomState = _joinRoomState.asStateFlow()
+    private  val _getAllPlayersFromRoomState = MutableStateFlow(GetAllPlayerInRoomState())
+    val getAllPlayersFromRoomState = _getAllPlayersFromRoomState.asStateFlow()
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -138,5 +141,27 @@ class AppViewModel @Inject constructor(
             }
         }
     }
+    fun getAllPlayersFromRoom(roomID: String){
+        viewModelScope.launch {
+            repositoryImpl.getAllPlayersFromRoom(roomID = roomID).collectLatest {result->
+               when(result){
+                   is ResultState.Loading->{
+                     _getAllPlayersFromRoomState.value = GetAllPlayerInRoomState(isLoading = true)
+                   }
+                   is ResultState.Success->{
+                       _getAllPlayersFromRoomState.value = GetAllPlayerInRoomState(isLoading = false,
+                           data = result.data)
+                   }
+                   is ResultState.Error->{
+                       _getAllPlayersFromRoomState.value =GetAllPlayerInRoomState(
+                           isLoading = false, error = result.message
+                       )
+                   }
+               }
+            }
+        }
+
+    }
+
 
 }
