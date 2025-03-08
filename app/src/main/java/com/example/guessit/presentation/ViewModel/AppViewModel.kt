@@ -117,7 +117,7 @@ class AppViewModel @Inject constructor(
 
     }
 
-    suspend fun joinRoomUsingUserID(roomID:String ,player:Player){
+    fun joinRoomUsingUserID(roomID:String ,player:Player){
         viewModelScope.launch {
             repositoryImpl.joinRoomWithID(roomID = roomID, player = player).collectLatest {result->
                 when(result){

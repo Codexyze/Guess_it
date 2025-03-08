@@ -5,5 +5,6 @@ data class Player(
     val score:Int = 0,
     val totalGuess:Int =0,
     val postion:Int =0,
-    val userName:String ="Player NoName"
+    val userName:String ="Player NoName",
+    val myturn:Int =0
 )
