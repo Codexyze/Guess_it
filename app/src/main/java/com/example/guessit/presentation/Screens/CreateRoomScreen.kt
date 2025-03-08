@@ -77,7 +77,9 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
                     score = 0,
                     totalGuess = 0,
                     postion = 0,
-                    userName = userName.value.toString()
+                    userName = userName.value.toString(),
+                    isLeader = true,
+                    noOfPlayers = 2 //Modify later
                 )
                 viewmodel.createRoom(player = player)
             }catch (e:Exception){

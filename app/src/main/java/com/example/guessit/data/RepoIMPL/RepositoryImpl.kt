@@ -2,6 +2,7 @@ package com.example.guessit.data.RepoIMPL
 
 import android.util.Log
 import com.example.guessit.data.Constants.Constants
+import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.Repository.Repository
 import com.example.guessit.domain.StateHandeling.ResultState
@@ -117,5 +118,18 @@ override suspend fun getAllPlayersFromRoom(roomID: String): Flow<ResultState<Lis
         close()
     }
 }
+
+    override suspend fun uploadAllPlayersCanvasPoints(lineCordinates: Lines,roomID: String): Flow<ResultState<String>> =callbackFlow{
+        trySend(ResultState.Loading)
+        firebaseFirestore.collection(Constants.ROOM).document(roomID).collection(Constants.CANVASLINES).document(roomID).set(lineCordinates).addOnSuccessListener {
+            trySend(ResultState.Success("SucessFully Sent Coordinates"))
+        }.addOnFailureListener {
+            trySend(ResultState.Error(it.message.toString()))
+        }
+        awaitClose {
+            close()
+        }
+
+    }
 
 }

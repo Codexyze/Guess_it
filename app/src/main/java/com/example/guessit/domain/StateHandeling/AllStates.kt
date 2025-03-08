@@ -40,3 +40,9 @@ data class GetAllPlayerInRoomState(
     val error:String? =null
 
 )
+
+data class UploadLineCordinatesState(
+    val isLoading: Boolean = false,
+    val data:String ? = null,
+    val error: String? =null
+)

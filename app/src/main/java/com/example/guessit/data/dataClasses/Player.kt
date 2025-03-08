@@ -8,5 +8,7 @@ data class Player(
     val totalGuess:Int =0,
     val postion:Int =0,
     val userName:String ="Player NoName",
-    val myturn:Int =0
+    val myturn:Int =0,
+    val isLeader:Boolean = false,
+    val noOfPlayers:Int = 2
 )

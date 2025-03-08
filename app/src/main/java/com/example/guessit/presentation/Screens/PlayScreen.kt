@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.data.PainterDataClass.Lines
+import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import kotlinx.coroutines.delay
 
@@ -39,14 +40,17 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
 
     val context = LocalContext.current
     val getWordsFromServerState = viewmodel.getWordFromServerSate.collectAsState()
+    val getAllPlayerInRoomState = viewmodel.getAllPlayersFromRoomState.collectAsState()
     val index = remember { mutableStateOf(0) }
     val lines = remember { mutableStateListOf<Lines>() }
     val colorvalue = remember { mutableStateOf(0) }
     var colorVariable: Color = Color.DarkGray
     var eraserStrokeWidth: Dp = 10.dp
+    var listFromServer:List<Player> = remember { mutableStateListOf<Player>() }
 
     LaunchedEffect(Unit) {
         viewmodel.getWordFromServer()
+        listFromServer = getAllPlayerInRoomState.value.data
         viewmodel.getAllPlayersFromRoom(roomID = roomID)
         while (true){
             delay(5000)
@@ -55,9 +59,9 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
 
     }
 
-    if (getWordsFromServerState.value.isLoading) {
+    if (getWordsFromServerState.value.isLoading && getAllPlayerInRoomState.value.isLoading ) {
         LoadingBar()
-    } else if (getWordsFromServerState.value.data != null) {
+    } else if (getWordsFromServerState.value.data != null && getAllPlayerInRoomState.value.data.isNotEmpty()) {
         if (viewmodel.getAllPlayersFromRoomState.collectAsState().value.data !=null){
             Log.d("ALLPLAYERS",viewmodel.getAllPlayersFromRoomState.collectAsState().value.data.toString())
         }
@@ -75,6 +79,15 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
+                getAllPlayerInRoomState.value.data.forEach {
+                    if (it.isLeader == true){
+                        Text("Leader: ${it.userName}")
+                    }else{
+                        Text("Name : ${it.userName}")//this printed
+                    }
+
+                }
+
             } else {
                 Text(
                     text = "No words available",
@@ -115,6 +128,16 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
                         end = line.end,
                         strokeWidth = line.strokeWidth.toPx(),
                         color = line.color
+                    )
+                    //modify data
+                    val data = Lines(
+                        start = line.start,
+                        end = line.end,
+                        strokeWidth = line.strokeWidth,
+                        color = line.color
+                    )
+                    viewmodel.uploadLiveLineCordinates(
+                        lineCordinates = data, roomID = roomID
                     )
                 }
             }
