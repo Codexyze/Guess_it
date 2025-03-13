@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.data.PainterDataClass.Lines
+import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import kotlinx.coroutines.delay
@@ -41,6 +42,7 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
     val context = LocalContext.current
     val getWordsFromServerState = viewmodel.getWordFromServerSate.collectAsState()
     val getAllPlayerInRoomState = viewmodel.getAllPlayersFromRoomState.collectAsState()
+    val live_line = remember { mutableStateListOf(LiveLine()) }
     val index = remember { mutableStateOf(0) }
     val lines = remember { mutableStateListOf<Lines>() }
     val colorvalue = remember { mutableStateOf(0) }
@@ -119,6 +121,14 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
                                 strokeWidth = eraserStrokeWidth,
                                 color = colorVariable
                             )
+                            val liveLine = LiveLine(
+                                startX = (change.position.x - dragAmount.x),
+                                startY = (change.position.y - dragAmount.y),
+                                endX = change.position.x,
+                                endY = change.position.y
+
+                            )
+                            live_line.add(liveLine)
                             lines.add(line)
                         }
                     }) {
@@ -136,9 +146,9 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
                         strokeWidth = line.strokeWidth,
                         color = line.color
                     )
-                    viewmodel.uploadLiveLineCordinates(
-                        lineCordinates = data, roomID = roomID
-                    )
+//                    viewmodel.uploadLiveLineCordinates(
+//                        lineCordinates = data, roomID = roomID
+//                    )
                 }
             }
 

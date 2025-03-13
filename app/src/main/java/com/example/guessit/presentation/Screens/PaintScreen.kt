@@ -1,5 +1,6 @@
 package com.example.guessit.presentation.Screens
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.data.PainterDataClass.Lines
+import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.presentation.ViewModel.AppViewModel
 
 @Composable
@@ -59,10 +61,16 @@ fun PaintScreen(navController: NavController,viewmodel:AppViewModel= hiltViewMod
                     strokeWidth =eraserStrokeWidth,
                     color = colorVariable
                 )
+
                 lines.add(line)
+                Log.d("LINES",lines.toString())
             }
         }) {
             lines.forEach {line->
+                Log.d("LINES",line.start.toString())
+                Log.d("LINES",line.end.toString())
+                Log.d("LINES",line.color.toString())
+                Log.d("LINES",line.strokeWidth.toString())
                 drawLine(
                     start = line.start,
                     end = line.end,
@@ -70,6 +78,7 @@ fun PaintScreen(navController: NavController,viewmodel:AppViewModel= hiltViewMod
                     color =line.color
 
                 )
+
 
             }
 
