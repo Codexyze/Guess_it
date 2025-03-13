@@ -139,6 +139,9 @@ fun PlayScreen(navController: NavController, viewmodel: AppViewModel = hiltViewM
                         strokeWidth = line.strokeWidth.toPx(),
                         color = line.color
                     )
+                    live_line.forEach {
+                       viewmodel.uploadLiveLinesToRealTimeDatabase(lines = it, roomID = roomID)
+                    }
                     //modify data
                     val data = Lines(
                         start = line.start,

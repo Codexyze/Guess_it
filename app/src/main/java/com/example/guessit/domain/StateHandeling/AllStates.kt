@@ -46,3 +46,9 @@ data class UploadLineCordinatesState(
     val data:String ? = null,
     val error: String? =null
 )
+
+data class UploadLinesToRealTimeDataBaseState(
+    val isLoading: Boolean = false,
+    val data:String ? = null,
+    val error: String? =null
+)

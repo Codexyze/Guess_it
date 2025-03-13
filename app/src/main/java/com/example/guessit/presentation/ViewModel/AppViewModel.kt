@@ -3,6 +3,7 @@ package com.example.guessit.presentation.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guessit.data.PainterDataClass.Lines
+import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.StateHandeling.CreateRoomState
@@ -13,6 +14,7 @@ import com.example.guessit.domain.StateHandeling.LoginState
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.example.guessit.domain.StateHandeling.SignUpState
 import com.example.guessit.domain.StateHandeling.UploadLineCordinatesState
+import com.example.guessit.domain.StateHandeling.UploadLinesToRealTimeDataBaseState
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,6 +42,8 @@ class AppViewModel @Inject constructor(
     val getAllPlayersFromRoomState = _getAllPlayersFromRoomState.asStateFlow()
     private val _uploadLiveLineCordinatesState = MutableStateFlow(UploadLineCordinatesState())
     val uploadLiveLineCordinatesSate = _uploadLiveLineCordinatesState.asStateFlow()
+    private  val _uploadToRealTimeDatabaseState = MutableStateFlow(UploadLinesToRealTimeDataBaseState())
+    val uploadToRealTimeDatabaseState = _uploadToRealTimeDatabaseState.asStateFlow()
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -188,6 +192,29 @@ class AppViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+    fun uploadLiveLinesToRealTimeDatabase(lines:LiveLine,roomID: String){
+        viewModelScope.launch {
+           repositoryImpl.uploadLineTorealTimeDatabase(lines = lines, roomID = roomID).collectLatest {result->
+               when(result){
+                   is ResultState.Error->{
+                       _uploadToRealTimeDatabaseState.value = UploadLinesToRealTimeDataBaseState(
+                           isLoading = false, error = result.message
+                       )
+                   }
+                   is ResultState.Success->{
+                       _uploadToRealTimeDatabaseState.value = UploadLinesToRealTimeDataBaseState(
+                           isLoading = false , data =  result.data
+                       )
+                   }
+                   is ResultState.Loading->{
+                       _uploadToRealTimeDatabaseState.value =UploadLinesToRealTimeDataBaseState(
+                           isLoading = true
+                       )
+                   }
+               }
+           }
         }
     }
 
