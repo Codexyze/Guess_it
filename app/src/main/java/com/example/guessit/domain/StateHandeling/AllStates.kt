@@ -1,5 +1,6 @@
 package com.example.guessit.domain.StateHandeling
 
+import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
 
 sealed class ResultState<out T>{
@@ -50,5 +51,11 @@ data class UploadLineCordinatesState(
 data class UploadLinesToRealTimeDataBaseState(
     val isLoading: Boolean = false,
     val data:String ? = null,
+    val error: String? =null
+)
+
+data class GetRealTimeLines(
+    val isLoading: Boolean = false,
+    val data:LiveLine ? = null,
     val error: String? =null
 )

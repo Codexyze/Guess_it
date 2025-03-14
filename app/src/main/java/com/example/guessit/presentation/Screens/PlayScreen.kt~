@@ -183,146 +183,6 @@ import kotlinx.coroutines.delay
 //        Text("Error Screen")
 //    }
 //}
-//@Composable
-//fun PlayScreen(
-//    navController: NavController,
-//    viewmodel: AppViewModel = hiltViewModel(),
-//    roomID: String
-//) {
-//    val context = LocalContext.current
-//
-//    // State for fetching words and players
-//    val getWordsFromServerState = viewmodel.getWordFromServerSate.collectAsState()
-//    val getAllPlayerInRoomState = viewmodel.getAllPlayersFromRoomState.collectAsState()
-//    val getRealTimeLinesState = viewmodel.getRealtimeLinesState.collectAsState()
-//
-//    // Local state for drawn lines
-//    val lines = remember { mutableStateListOf<Lines>() }
-//    val index = remember { mutableStateOf(0) }
-//    val colorValue = remember { mutableStateOf(0) }
-//
-//    // Convert colorValue to actual Color
-//    val colorVariable = when (colorValue.value) {
-//        0 -> Color.Green
-//        1 -> Color.Red
-//        2 -> Color.Blue
-//        3 -> Color.Yellow
-//        else -> Color.White
-//    }
-//
-//    val eraserStrokeWidth: Dp = if (colorValue.value == 4) 50.dp else 10.dp
-//
-//    LaunchedEffect(Unit) {
-//        // Fetch words and players initially
-//        viewmodel.getWordFromServer()
-//        viewmodel.getAllPlayersFromRoom(roomID = roomID)
-//
-//        while (true) {
-//            delay(5000)
-//            index.value = index.value + 1
-//            viewmodel.getRealtimeLines(roomID = roomID) // Periodically fetch live lines
-//        }
-//    }
-//
-//    if (getWordsFromServerState.value.isLoading && getAllPlayerInRoomState.value.isLoading) {
-//        LoadingBar()
-//    } else if (getWordsFromServerState.value.data != null && getAllPlayerInRoomState.value.data.isNotEmpty()) {
-//        val words = getWordsFromServerState.value.data ?: emptyList()
-//
-//        // ✅ Prevents crash if words list is empty
-//        if (words.isNotEmpty()) {
-//            index.value = index.value.coerceIn(0, words.size - 1)
-//        } else {
-//            index.value = 0
-//        }
-//
-//        Column(modifier = Modifier.fillMaxSize()) {
-//            // Display word and players list
-//            if (words.isNotEmpty()) {
-//                Text(
-//                    text = words[index.value],
-//                    modifier = Modifier.fillMaxWidth(),
-//                    textAlign = TextAlign.Center
-//                )
-//                getAllPlayerInRoomState.value.data.forEach {
-//                    Text(if (it.isLeader) "Leader: ${it.userName}" else "Name: ${it.userName}")
-//                }
-//            } else {
-//                Text("No words available", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
-//            }
-//
-//            // 🎨 Canvas for Drawing
-//            Canvas(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .weight(1f)
-//                    .background(color = Color.White)
-//                    .pointerInput(Unit) {
-//                        detectDragGestures { change, dragAmount ->
-//                            change.consume()
-//
-//                            // Create new line object
-//                            val newLine = Lines(
-//                                start = change.position - dragAmount,
-//                                end = change.position,
-//                                strokeWidth = eraserStrokeWidth,
-//                                color = colorVariable
-//                            )
-//
-//                            val liveNewLine = LiveLine(
-//                                startX = change.position.x - dragAmount.x,
-//                                startY = change.position.y - dragAmount.y,
-//                                endX = change.position.x,
-//                                endY = change.position.y,
-//                                strokeWidth = eraserStrokeWidth.value
-//                            )
-//
-//                            // Add locally
-//                            lines.add(newLine)
-//
-//                            // Upload new line to Firebase
-//                            viewmodel.uploadLiveLinesToRealTimeDatabase(liveNewLine, roomID)
-//                        }
-//                    }
-//            ) {
-//                // Draw locally stored lines
-//                lines.forEach { line ->
-//                    drawLine(
-//                        start = line.start,
-//                        end = line.end,
-//                        strokeWidth = line.strokeWidth.toPx(),
-//                        color = line.color
-//                    )
-//                }
-//
-//                // Draw real-time Firebase data
-//                getRealTimeLinesState.value.data?.let { liveLine ->
-//                    drawLine(
-//                        start = Offset(liveLine.startX, liveLine.startY),
-//                        end = Offset(liveLine.endX, liveLine.endY),
-//                        strokeWidth = liveLine.strokeWidth,
-//                        color = Color.Red // Change color as needed
-//                    )
-//                }
-//            }
-//
-//            // 🎨 Color selection buttons
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceEvenly
-//            ) {
-//                Button(onClick = { colorValue.value = 1 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {}
-//                Button(onClick = { colorValue.value = 2 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)) {}
-//                Button(onClick = { colorValue.value = 3 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)) {}
-//                Button(onClick = { colorValue.value = 4 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Green)) {
-//                    Text("Erase")
-//                }
-//            }
-//        }
-//    } else {
-//        Text("Error Screen")
-//    }
-//}
 @Composable
 fun PlayScreen(
     navController: NavController,
@@ -331,7 +191,7 @@ fun PlayScreen(
 ) {
     val context = LocalContext.current
 
-    // State for fetching words, players, and real-time lines
+    // State for fetching words and players
     val getWordsFromServerState = viewmodel.getWordFromServerSate.collectAsState()
     val getAllPlayerInRoomState = viewmodel.getAllPlayersFromRoomState.collectAsState()
     val getRealTimeLinesState = viewmodel.getRealtimeLinesState.collectAsState()
@@ -359,21 +219,8 @@ fun PlayScreen(
 
         while (true) {
             delay(5000)
+            index.value = index.value + 1
             viewmodel.getRealtimeLines(roomID = roomID) // Periodically fetch live lines
-        }
-    }
-
-    // ✅ Append real-time lines to the local list without removing existing ones
-    LaunchedEffect(getRealTimeLinesState.value.data) {
-        getRealTimeLinesState.value.data?.let { liveLine ->
-            lines.add(
-                Lines(
-                    start = Offset(liveLine.startX, liveLine.startY),
-                    end = Offset(liveLine.endX, liveLine.endY),
-                    strokeWidth = liveLine.strokeWidth.dp,
-                    color = Color.Red // Change color as needed
-                )
-            )
         }
     }
 
@@ -382,7 +229,7 @@ fun PlayScreen(
     } else if (getWordsFromServerState.value.data != null && getAllPlayerInRoomState.value.data.isNotEmpty()) {
         val words = getWordsFromServerState.value.data ?: emptyList()
 
-        // Prevent crash if words list is empty
+        // ✅ Prevents crash if words list is empty
         if (words.isNotEmpty()) {
             index.value = index.value.coerceIn(0, words.size - 1)
         } else {
@@ -438,13 +285,23 @@ fun PlayScreen(
                         }
                     }
             ) {
-                // Draw all stored lines (both local & real-time)
+                // Draw locally stored lines
                 lines.forEach { line ->
                     drawLine(
                         start = line.start,
                         end = line.end,
                         strokeWidth = line.strokeWidth.toPx(),
                         color = line.color
+                    )
+                }
+
+                // Draw real-time Firebase data
+                getRealTimeLinesState.value.data?.let { liveLine ->
+                    drawLine(
+                        start = Offset(liveLine.startX, liveLine.startY),
+                        end = Offset(liveLine.endX, liveLine.endY),
+                        strokeWidth = liveLine.strokeWidth,
+                        color = Color.Red // Change color as needed
                     )
                 }
             }

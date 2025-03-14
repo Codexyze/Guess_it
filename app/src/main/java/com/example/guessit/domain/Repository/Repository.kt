@@ -16,4 +16,5 @@ interface Repository {
     suspend fun getAllPlayersFromRoom(roomID: String):Flow<ResultState<List<Player>>>
     suspend fun uploadAllPlayersCanvasPoints(lineCordinates:Lines,roomID: String):Flow<ResultState<String>>
     suspend fun uploadLineTorealTimeDatabase(lines:LiveLine,roomID: String):Flow<ResultState<String>>
+    suspend fun getRealtimeLines(roomID: String):Flow<ResultState<LiveLine>>
 }

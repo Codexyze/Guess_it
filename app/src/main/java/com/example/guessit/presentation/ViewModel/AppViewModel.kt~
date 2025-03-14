@@ -8,7 +8,6 @@ import com.example.guessit.data.RepoIMPL.RepositoryImpl
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.StateHandeling.CreateRoomState
 import com.example.guessit.domain.StateHandeling.GetAllPlayerInRoomState
-import com.example.guessit.domain.StateHandeling.GetRealTimeLines
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
 import com.example.guessit.domain.StateHandeling.JoinRoomState
 import com.example.guessit.domain.StateHandeling.LoginState
@@ -45,8 +44,6 @@ class AppViewModel @Inject constructor(
     val uploadLiveLineCordinatesSate = _uploadLiveLineCordinatesState.asStateFlow()
     private  val _uploadToRealTimeDatabaseState = MutableStateFlow(UploadLinesToRealTimeDataBaseState())
     val uploadToRealTimeDatabaseState = _uploadToRealTimeDatabaseState.asStateFlow()
-    private val _getRealtimeLinesState = MutableStateFlow(GetRealTimeLines())
-    val getRealtimeLinesState = _getRealtimeLinesState.asStateFlow()
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -219,32 +216,6 @@ class AppViewModel @Inject constructor(
                }
            }
         }
-    }
-
-    fun getRealtimeLines(roomID: String){
-        viewModelScope.launch {
-            repositoryImpl.getRealtimeLines(roomID = roomID).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                      _getRealtimeLinesState.value = GetRealTimeLines(
-                          isLoading = true
-                      )
-                    }
-                    is ResultState.Success->{
-                        _getRealtimeLinesState.value = GetRealTimeLines(
-                            isLoading = false, data = result.data
-                        )
-                    }
-                    is ResultState.Error->{
-                        _getRealtimeLinesState.value =GetRealTimeLines(
-                            isLoading = false, error = result.message
-                        )
-                    }
-                }
-
-            }
-        }
-
     }
 
 

@@ -8,7 +8,10 @@ import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.Repository.Repository
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -150,6 +153,31 @@ override suspend fun getAllPlayersFromRoom(roomID: String): Flow<ResultState<Lis
         }
         awaitClose {
             close()
+        }
+    }
+
+    override suspend fun getRealtimeLines(roomID: String): Flow<ResultState<LiveLine>> = callbackFlow {
+        trySend(ResultState.Loading)
+
+        val reference = firebaseRealtimeDatabase.getReference(roomID)
+
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(LiveLine::class.java)
+                if (data != null) {
+                    trySend(ResultState.Success(data))
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                trySend(ResultState.Error(error.message))
+            }
+        }
+
+        reference.addValueEventListener(listener)
+
+        awaitClose {
+            reference.removeEventListener(listener) // Remove listener when not needed
         }
     }
 
