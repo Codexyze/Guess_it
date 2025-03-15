@@ -7,4 +7,5 @@ object Constants {
     const val ROOM ="Room"
     const val PLAYERS="Players"
     const val CANVASLINES="CanvasLines"
+    const val MESSAGES="messages"
 }

@@ -19,7 +19,8 @@ object CREATEROOMSCREEN
 
 @Serializable
 data class PLAYSCREEN(
-    val roomID:String
+    val roomID:String,
+    val name:String
 )
 
 @Serializable

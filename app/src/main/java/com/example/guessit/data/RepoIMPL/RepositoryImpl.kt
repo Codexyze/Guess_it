@@ -2,6 +2,7 @@ package com.example.guessit.data.RepoIMPL
 
 import android.util.Log
 import com.example.guessit.data.Constants.Constants
+import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
@@ -178,6 +179,18 @@ override suspend fun getAllPlayersFromRoom(roomID: String): Flow<ResultState<Lis
 
         awaitClose {
             reference.removeEventListener(listener) // Remove listener when not needed
+        }
+    }
+
+    override suspend fun sendMessageToAllRoomMembers(roomID:String,message: Message): Flow<ResultState<String>> = callbackFlow{
+       trySend(ResultState.Loading)
+        firebaseRealtimeRefrence.reference.child(roomID).child(Constants.MESSAGES).setValue(message).addOnSuccessListener {
+            trySend(ResultState.Success("SucessFull"))
+        }.addOnFailureListener {
+            trySend(ResultState.Error(it.message.toString()))
+        }
+        awaitClose {
+            close()
         }
     }
 

@@ -58,7 +58,7 @@ fun JoinRoomScreen(navController: NavController,viewmodel:AppViewModel = hiltVie
                     )
                     try {
                         viewmodel.joinRoomUsingUserID(roomID = roomID.value.toString(), player = player )
-                        navController.navigate(PLAYSCREEN(roomID = roomID.value)){
+                        navController.navigate(PLAYSCREEN(roomID = roomID.value, name = userName.value)){
                             popUpTo(0)
                         }
                     }catch (e:Exception){

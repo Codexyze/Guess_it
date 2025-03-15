@@ -1,5 +1,6 @@
 package com.example.guessit.domain.Repository
 
+import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
@@ -17,4 +18,5 @@ interface Repository {
     suspend fun uploadAllPlayersCanvasPoints(lineCordinates:Lines,roomID: String):Flow<ResultState<String>>
     suspend fun uploadLineTorealTimeDatabase(lines:LiveLine,roomID: String):Flow<ResultState<String>>
     suspend fun getRealtimeLines(roomID: String):Flow<ResultState<LiveLine>>
+    suspend fun sendMessageToAllRoomMembers(roomID:String,message: Message):Flow<ResultState<String>>
 }

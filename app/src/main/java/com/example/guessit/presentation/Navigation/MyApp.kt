@@ -53,7 +53,7 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         }
         composable<PLAYSCREEN> {backstackentry->
             val data:PLAYSCREEN = backstackentry.toRoute()
-            PlayScreen(navController = navController, roomID = data.roomID)
+            PlayScreen(navController = navController, roomID = data.roomID, name = data.name)
         }
         composable<JOINSCREEN>{
             JoinRoomScreen(navController = navController)

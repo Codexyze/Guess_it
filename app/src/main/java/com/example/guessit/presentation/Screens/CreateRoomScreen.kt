@@ -1,5 +1,6 @@
 package com.example.guessit.presentation.Screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,7 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
     LaunchedEffect (createRoomState.value){
         if (createRoomState.value.data != null){
            //navigate to play screen
-            navController.navigate(PLAYSCREEN(roomID = userID.value))
+            navController.navigate(PLAYSCREEN(roomID = userID.value, name = userName.value))
         }
     }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -83,6 +84,7 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
                 )
                 viewmodel.createRoom(player = player)
             }catch (e:Exception){
+                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
 
             }
 

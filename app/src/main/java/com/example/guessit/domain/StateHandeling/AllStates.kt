@@ -59,3 +59,9 @@ data class GetRealTimeLines(
     val data:LiveLine ? = null,
     val error: String? =null
 )
+
+data class SendMessageToRoomMembersState(
+    val isLoading: Boolean = false,
+    val data:String ? = null,
+    val error: String? =null
+)

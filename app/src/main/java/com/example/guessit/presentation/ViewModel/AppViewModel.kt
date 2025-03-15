@@ -2,6 +2,7 @@ package com.example.guessit.presentation.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
@@ -13,6 +14,7 @@ import com.example.guessit.domain.StateHandeling.GetWordFromServerState
 import com.example.guessit.domain.StateHandeling.JoinRoomState
 import com.example.guessit.domain.StateHandeling.LoginState
 import com.example.guessit.domain.StateHandeling.ResultState
+import com.example.guessit.domain.StateHandeling.SendMessageToRoomMembersState
 import com.example.guessit.domain.StateHandeling.SignUpState
 import com.example.guessit.domain.StateHandeling.UploadLineCordinatesState
 import com.example.guessit.domain.StateHandeling.UploadLinesToRealTimeDataBaseState
@@ -47,6 +49,9 @@ class AppViewModel @Inject constructor(
     val uploadToRealTimeDatabaseState = _uploadToRealTimeDatabaseState.asStateFlow()
     private val _getRealtimeLinesState = MutableStateFlow(GetRealTimeLines())
     val getRealtimeLinesState = _getRealtimeLinesState.asStateFlow()
+    private  val _sendMessageToRoomMembersState = MutableStateFlow(SendMessageToRoomMembersState())
+    val sendMessageToRoomMembersState =_sendMessageToRoomMembersState.asStateFlow()
+
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
@@ -245,6 +250,28 @@ class AppViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun sendMessageToRoomMembers(roomID: String,message: Message){
+        viewModelScope.launch {
+            repositoryImpl.sendMessageToAllRoomMembers(roomID = roomID, message = message).collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                        _sendMessageToRoomMembersState.value = SendMessageToRoomMembersState(isLoading = true)
+                    }
+                    is ResultState.Error->{
+                        _sendMessageToRoomMembersState.value = SendMessageToRoomMembersState(
+                            isLoading = false, error = result.message
+                        )
+                    }
+                    is ResultState.Success->{
+                        _sendMessageToRoomMembersState.value =SendMessageToRoomMembersState(
+                            isLoading = false, data = result.data
+                        )
+                    }
+                }
+            }
+        }
     }
 
 
