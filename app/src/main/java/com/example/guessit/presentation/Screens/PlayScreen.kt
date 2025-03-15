@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
+import com.example.guessit.presentation.Navigation.MESSAGESCREEN
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import kotlinx.coroutines.delay
 
@@ -174,6 +175,9 @@ fun PlayScreen(
                 Button(onClick = { colorValue.value = 3 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)) {}
                 Button(onClick = {
                     //implement message by dialog
+                    navController.navigate(MESSAGESCREEN(
+                        roomID = roomID, name = name
+                    ))
 
                 }) {
                    Text("Message")

@@ -1,5 +1,6 @@
 package com.example.guessit.presentation.Screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,53 +47,69 @@ fun CreateRoomScreen(viewmodel:AppViewModel = hiltViewModel(),navController: Nav
     LaunchedEffect(Unit) {
         userID.value = FirebaseAuth.getInstance().currentUser?.uid.toString()
     }
-    LaunchedEffect (createRoomState.value){
-        if (createRoomState.value.data != null){
-           //navigate to play screen
+    LaunchedEffect(createRoomState.value) {
+        createRoomState.value.data?.let {
             navController.navigate(PLAYSCREEN(roomID = userID.value, name = userName.value))
         }
     }
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Copy The Code", fontSize = 28.sp)
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Spacer(modifier = Modifier.height(18.dp))
-            Text(userID.value)
-            Icon(
-                imageVector = Icons.Outlined.ContentPaste, contentDescription = "ClipBoard", modifier =
+//    LaunchedEffect (createRoomState.value){
+//        if (createRoomState.value.data != null){
+//           //navigate to play screen
+//            navController.navigate(PLAYSCREEN(roomID = userID.value, name = userName.value))
+//        }
+//    }
+    if(createRoomState.value.isLoading){
+        LoadingBar()
+    }else if(createRoomState.value.error !=null){
+        Toast.makeText(context, createRoomState.value.error.toString(), Toast.LENGTH_SHORT).show()
+    }else{
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text("Copy The Code", fontSize = 28.sp)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Spacer(modifier = Modifier.height(18.dp))
+                Text(userID.value)
+                Icon(
+                    imageVector = Icons.Outlined.ContentPaste, contentDescription = "ClipBoard", modifier =
                     Modifier.clickable {
                         clipbordManager.setText(AnnotatedString(userID.value))
                         FancyToast.makeText(context,"Copied To ClipBoard !",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show()
                     }
-            )
-        }
-        OutlinedTextField(value =userName.value , onValueChange = {
-            userName.value = it
-        } , modifier = Modifier.fillMaxWidth(0.85f), placeholder = {
-            Text("Player Name")
-        })
-        Button(onClick = {
-        // call fun from backend
-            try{
-                val player = Player(
-                    userID = userID.value,
-                    score = 0,
-                    totalGuess = 0,
-                    postion = 0,
-                    userName = userName.value.toString(),
-                    isLeader = true,
-                    noOfPlayers = 2 //Modify later
                 )
-                viewmodel.createRoom(player = player)
-            }catch (e:Exception){
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+            }
+            OutlinedTextField(value =userName.value , onValueChange = {
+                userName.value = it
+            } , modifier = Modifier.fillMaxWidth(0.85f), placeholder = {
+                Text("Player Name")
+            })
+            Button(onClick = {
+                // call fun from backend
+                try{
+                    val player = Player(
+                        userID = userID.value,
+                        score = 0,
+                        totalGuess = 0,
+                        postion = 0,
+                        userName = userName.value.toString(),
+                        isLeader = true,
+                        noOfPlayers = 2 //Modify later
+                    )
+                    Log.d("ButtonClick", "Creating room for player: $player")
+                   viewmodel.createRoom(player = player)
+                    if(viewmodel.createRoomState.value.data != null){
+                        navController.navigate(PLAYSCREEN(roomID = userID.value, name = userName.value))
+                    }
+                }catch (e:Exception){
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
 
+                }
+
+            }) {
+                Text("Click t craete Room")
             }
 
-        }) {
-            Text("Click t craete Room")
         }
-
     }
+
 
 
 

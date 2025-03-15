@@ -85,8 +85,10 @@ class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth
         firebaseFirestore.collection(Constants.ROOM).document(currentUserAuth)
             .collection(Constants.PLAYERS).document(currentUserAuth).set(playerData).addOnSuccessListener {
                 trySend(ResultState.Success("Room Created"))
+                Log.d("Firebase", "Room created successfully")
             }.addOnFailureListener {
                 trySend(ResultState.Error("Failed to Create Room"))
+                Log.d("Firebase", "${it.message}")
             }
         awaitClose {
             close()

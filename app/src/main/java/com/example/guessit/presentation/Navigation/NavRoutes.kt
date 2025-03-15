@@ -25,3 +25,8 @@ data class PLAYSCREEN(
 
 @Serializable
 object JOINSCREEN
+
+@Serializable
+data class MESSAGESCREEN(
+    val roomID:String,val name:String
+)

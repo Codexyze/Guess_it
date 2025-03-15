@@ -12,6 +12,7 @@ import com.example.guessit.presentation.Screens.CreateRoomScreen
 import com.example.guessit.presentation.Screens.HomeScreen
 import com.example.guessit.presentation.Screens.JoinRoomScreen
 import com.example.guessit.presentation.Screens.LoginScreen
+import com.example.guessit.presentation.Screens.MessageScreen
 import com.example.guessit.presentation.Screens.PaintScreen
 import com.example.guessit.presentation.Screens.PlayScreen
 import com.example.guessit.presentation.Screens.SignUpScreen
@@ -57,6 +58,10 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         }
         composable<JOINSCREEN>{
             JoinRoomScreen(navController = navController)
+        }
+        composable<MESSAGESCREEN> {args->
+            val argsdata:MESSAGESCREEN = args.toRoute()
+            MessageScreen(roomID = argsdata.roomID, name = argsdata.name)
         }
 
     }
