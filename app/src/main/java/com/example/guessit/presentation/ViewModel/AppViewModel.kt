@@ -8,6 +8,7 @@ import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.StateHandeling.CreateRoomState
+import com.example.guessit.domain.StateHandeling.GetAllMessageFromRoomState
 import com.example.guessit.domain.StateHandeling.GetAllPlayerInRoomState
 import com.example.guessit.domain.StateHandeling.GetRealTimeLines
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
@@ -51,6 +52,8 @@ class AppViewModel @Inject constructor(
     val getRealtimeLinesState = _getRealtimeLinesState.asStateFlow()
     private  val _sendMessageToRoomMembersState = MutableStateFlow(SendMessageToRoomMembersState())
     val sendMessageToRoomMembersState =_sendMessageToRoomMembersState.asStateFlow()
+    private val _getAllMessageFromRoomState = MutableStateFlow(GetAllMessageFromRoomState())
+    val getAllMessageFromRoomState = _getAllMessageFromRoomState.asStateFlow()
 
 
     fun signUp(email:String , password:String){
@@ -272,6 +275,34 @@ class AppViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getAllMessageFromRoom(roomID: String){
+        viewModelScope.launch {
+            repositoryImpl.getAllMessagesFromRoom(roomID = roomID).collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                        _getAllMessageFromRoomState.value = GetAllMessageFromRoomState(
+                            isLoading = true
+                        )
+                    }
+                    is ResultState.Success->{
+                        _getAllMessageFromRoomState.value =GetAllMessageFromRoomState(
+                            isLoading = false, data = result.data
+                        )
+
+                    }
+                    is ResultState.Error->{
+                        _getAllMessageFromRoomState.value =GetAllMessageFromRoomState(
+                            isLoading = false, error = result.message
+                        )
+
+                    }
+                }
+
+            }
+        }
+
     }
 
 

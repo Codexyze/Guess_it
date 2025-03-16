@@ -1,5 +1,6 @@
 package com.example.guessit.presentation.Screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
 
 @Composable
 fun MessageScreen(roomID:String,name:String,viewmodel:AppViewModel = hiltViewModel()) {
@@ -27,13 +29,14 @@ fun MessageScreen(roomID:String,name:String,viewmodel:AppViewModel = hiltViewMod
     val context = LocalContext.current
     val userID= FirebaseAuth.getInstance().currentUser?.uid
     val sendMessageToRoomMemberState = viewmodel.sendMessageToRoomMembersState.collectAsState()
+    val getAllMessageFromRoomState = viewmodel.getAllMessageFromRoomState.collectAsState()
     LaunchedEffect(Unit) {
-
+        viewmodel.getAllMessageFromRoom(roomID = roomID)
 
     }
-    if(sendMessageToRoomMemberState.value.isLoading){
+    if(sendMessageToRoomMemberState.value.isLoading&& getAllMessageFromRoomState.value.isLoading ){
         LoadingBar()
-    }else if(sendMessageToRoomMemberState.value.error !=null){
+    }else if(sendMessageToRoomMemberState.value.error !=null && getAllMessageFromRoomState.value.error !=null){
         Toast.makeText(context, "Error in Loading Messages", Toast.LENGTH_SHORT).show()
     }else{
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -59,6 +62,13 @@ fun MessageScreen(roomID:String,name:String,viewmodel:AppViewModel = hiltViewMod
                     Text("Send")
                 }
 
+            }
+            if(getAllMessageFromRoomState.value.data != null){
+                getAllMessageFromRoomState.value.data.forEach { message ->
+                    Text(message.message)
+                }
+            }else{
+                Text("No message")
             }
 
 

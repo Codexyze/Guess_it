@@ -1,5 +1,6 @@
 package com.example.guessit.domain.StateHandeling
 
+import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
 
@@ -64,4 +65,10 @@ data class SendMessageToRoomMembersState(
     val isLoading: Boolean = false,
     val data:String ? = null,
     val error: String? =null
+)
+
+data class GetAllMessageFromRoomState(
+    val isLoading: Boolean = false,
+    val data:List<Message> = emptyList(),
+    val error:String ? = null
 )
