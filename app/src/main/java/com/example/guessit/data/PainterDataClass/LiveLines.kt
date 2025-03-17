@@ -5,6 +5,7 @@ data class LiveLine(
     val startY: Float = 0f,
     val endX: Float = 0f,
     val endY: Float = 0f,
-    val strokeWidth: Float = 10f
+    val strokeWidth: Float = 10f,
+    val colorvalue:Int = 0
 )
 

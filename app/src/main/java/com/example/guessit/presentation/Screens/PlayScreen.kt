@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,14 +61,18 @@ fun PlayScreen(
     val index = remember { mutableStateOf(0) }
     val colorValue = remember { mutableStateOf(0) }
 
-    // Convert colorValue to actual Color
-    val colorVariable = when (colorValue.value) {
-        0 -> Color.Green
-        1 -> Color.Red
-        2 -> Color.Blue
-        3 -> Color.Yellow
-        else -> Color.White
+    val colorVariable by remember(colorValue.value) { // ✅ This makes it reactive
+        mutableStateOf(
+            when (colorValue.value) {
+                0 -> Color.Green
+                1 -> Color.Red
+                2 -> Color.Blue
+                3 -> Color.Yellow
+                else -> Color.White
+            }
+        )
     }
+
 
     val eraserStrokeWidth: Dp = if (colorValue.value == 4) 50.dp else 10.dp
 
@@ -85,12 +90,13 @@ fun PlayScreen(
     // ✅ Append real-time lines to the local list without removing existing ones
     LaunchedEffect(getRealTimeLinesState.value.data) {
         getRealTimeLinesState.value.data?.let { liveLine ->
+            colorValue.value = liveLine.colorvalue
             lines.add(
                 Lines(
                     start = Offset(liveLine.startX, liveLine.startY),
                     end = Offset(liveLine.endX, liveLine.endY),
                     strokeWidth = liveLine.strokeWidth.dp,
-                    color = Color.Red // Change color as needed
+                    color = colorVariable // Change color as needed
                 )
             )
         }
@@ -109,19 +115,6 @@ fun PlayScreen(
         }
 
         Column(modifier = Modifier.fillMaxSize()) {
-//            // Display word and players list
-//            if (words.isNotEmpty()) {
-//                Text(
-//                    text = words[index.value],
-//                    modifier = Modifier.fillMaxWidth(),
-//                    textAlign = TextAlign.Center
-//                )
-//                getAllPlayerInRoomState.value.data.forEach {
-//                    Text(if (it.isLeader) "Leader: ${it.userName}" else "Name: ${it.userName}")
-//                }
-//            } else {
-//                Text("No words available", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
-//            }
 
             // 🎨 Canvas for Drawing
             Canvas(
@@ -146,7 +139,8 @@ fun PlayScreen(
                                 startY = change.position.y - dragAmount.y,
                                 endX = change.position.x,
                                 endY = change.position.y,
-                                strokeWidth = eraserStrokeWidth.value
+                                strokeWidth = eraserStrokeWidth.value,
+                                colorvalue = colorValue.value
                             )
 
                             // Add locally
@@ -186,19 +180,7 @@ fun PlayScreen(
                 }, modifier = Modifier.weight(1f)) {
                     Icon(imageVector = Icons.Filled.Message , contentDescription = "message")
                 }
-//                Button(onClick = {
-//                    //implement message by dialog
-//                    navController.navigate(MESSAGESCREEN(
-//                        roomID = roomID, name = name
-//                    ))
-//
-//                }, modifier = Modifier.weight(1f)) {
-//                   Text("Message")
-//                }
-//                Button(onClick = { colorValue.value = 4 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
-//                    , modifier = Modifier.weight(1f)) {
-//                    Text("Erase")
-//                }
+
                 IconButton(onClick = {
                     colorValue.value = 4
                 }, modifier = Modifier.weight(1f)) {
