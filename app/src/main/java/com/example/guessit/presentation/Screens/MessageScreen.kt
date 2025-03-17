@@ -30,6 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -133,28 +134,47 @@ fun MessageScreen(roomID: String, name: String, viewmodel: AppViewModel = hiltVi
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(12.dp))
                     .padding(8.dp)
             ) {
                 if (getAllMessageFromRoomState.value.data.isNullOrEmpty()) {
                     item {
                         Text(
                             "No messages yet",
-                            color = Color.Gray,
                             fontStyle = FontStyle.Italic,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                     }
                 } else {
-                    items(getAllMessageFromRoomState.value.data!!) { message ->
-                        Text(
-                            text = message.message,
+                    items(getAllMessageFromRoomState.value.data) { message ->
+                        Row(
                             modifier = Modifier
-                                .padding(8.dp)
-                                .background(Color.White, shape = RoundedCornerShape(8.dp))
+                                .fillMaxWidth()
                                 .padding(8.dp),
-                            fontSize = 16.sp
-                        )
+                            horizontalArrangement = if (message.userID == userID) Arrangement.End else Arrangement.Start
+                        ) {
+                            if (message.userID == userID) {
+                                Text(
+                                    text = message.message,
+                                    color = Color.Black,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .background(Color.Green, shape = RoundedCornerShape(8.dp))
+                                        .padding(8.dp),
+                                    fontSize = 16.sp
+                                )
+                            } else {
+                                Text(
+                                    text = message.message,
+                                    color = Color.Black,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .background(Color.Yellow, shape = RoundedCornerShape(8.dp))
+                                        .padding(8.dp),
+                                    fontSize = 16.sp
+                                )
+                            }
+
+                        }
                     }
                 }
             }
@@ -163,30 +183,26 @@ fun MessageScreen(roomID: String, name: String, viewmodel: AppViewModel = hiltVi
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
-                    .background(Color.White, shape = RoundedCornerShape(50.dp))
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedTextField(
                     value = message.value,
                     onValueChange = { message.value = it },
-                    placeholder = { Text("Type a message...") },
+                    placeholder = { Text("Type a message...", color = Color.Black) },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(50.dp)
                 )
-                Button(
-                    onClick = {
-                        val msg = Message(
-                            message = message.value,
-                            postLink = "Not now",
-                            userID = userID.toString()
-                        )
-                        viewmodel.sendMessageToRoomMembers(roomID = roomID, message = msg)
-                        message.value = ""
-                    },
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Text("Send")
+                IconButton(onClick = {
+                    val msg = Message(
+                        message = message.value,
+                        postLink = "Not now",
+                        userID = userID.toString()
+                    )
+                    viewmodel.sendMessageToRoomMembers(roomID = roomID, message = msg)
+                    message.value = ""
+                }) {
+                    Icon(imageVector = Icons.Default.Send, contentDescription = "Send")
                 }
             }
         }
