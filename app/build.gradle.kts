@@ -79,5 +79,9 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     //SplashScreen
     implementation("androidx.core:core-splashscreen:1.0.0")
+    //Lottie
+    implementation("com.airbnb.android:lottie-compose:6.4.0")
+    //Extended Icons
+    implementation ("androidx.compose.material:material-icons-extended:1.6.7")
 
 }

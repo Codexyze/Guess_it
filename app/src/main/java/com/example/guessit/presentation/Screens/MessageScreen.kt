@@ -45,61 +45,7 @@ import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
-//
-//@Composable
-//fun MessageScreen(roomID:String,name:String,viewmodel:AppViewModel = hiltViewModel()) {
-//    val message = remember { mutableStateOf("") }
-//    val context = LocalContext.current
-//    val userID= FirebaseAuth.getInstance().currentUser?.uid
-//    val sendMessageToRoomMemberState = viewmodel.sendMessageToRoomMembersState.collectAsState()
-//    val getAllMessageFromRoomState = viewmodel.getAllMessageFromRoomState.collectAsState()
-//    LaunchedEffect(Unit) {
-//        viewmodel.getAllMessageFromRoom(roomID = roomID)
-//
-//    }
-//    if(sendMessageToRoomMemberState.value.isLoading&& getAllMessageFromRoomState.value.isLoading ){
-//        LoadingBar()
-//    }else if(sendMessageToRoomMemberState.value.error !=null && getAllMessageFromRoomState.value.error !=null){
-//        Toast.makeText(context, "Error in Loading Messages", Toast.LENGTH_SHORT).show()
-//    }else{
-//        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-//
-//            Text("Chats")
-//            Row(modifier = Modifier.fillMaxWidth()) {
-//                OutlinedTextField(value = message.value, onValueChange = {
-//                    message.value = it
-//                }, placeholder = {
-//                    Text("Message")
-//                }, modifier = Modifier.fillMaxWidth(0.70f))
-//                Button(
-//                    onClick = {
-//                        val message = Message(
-//                            message = message.value,
-//                            postLink = "Not now",
-//                            userID = userID.toString()
-//                        )
-//                        viewmodel.sendMessageToRoomMembers(roomID = roomID, message = message)
-//
-//                    }, modifier = Modifier.fillMaxWidth(0.30f)
-//                ) {
-//                    Text("Send")
-//                }
-//
-//            }
-//            if(getAllMessageFromRoomState.value.data != null){
-//                getAllMessageFromRoomState.value.data.forEach { message ->
-//                    Text(message.message)
-//                }
-//            }else{
-//                Text("No message")
-//            }
-//
-//
-//        }
-//    }
-//
-//
-//}
+
 @Composable
 fun MessageScreen(roomID: String, name: String, viewmodel: AppViewModel = hiltViewModel()) {
     val message = remember { mutableStateOf("") }

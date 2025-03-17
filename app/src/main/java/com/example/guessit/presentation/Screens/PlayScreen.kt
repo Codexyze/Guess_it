@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -170,20 +173,36 @@ fun PlayScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = { colorValue.value = 1 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {}
-                Button(onClick = { colorValue.value = 2 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)) {}
-                Button(onClick = { colorValue.value = 3 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)) {}
-                Button(onClick = {
-                    //implement message by dialog
+                Button(onClick = { colorValue.value = 1 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                , modifier = Modifier.weight(1f)) {}
+                Button(onClick = { colorValue.value = 2 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                    , modifier = Modifier.weight(1f)) {}
+                Button(onClick = { colorValue.value = 3 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
+                    , modifier = Modifier.weight(1f)) {}
+                IconButton(onClick = {
                     navController.navigate(MESSAGESCREEN(
                         roomID = roomID, name = name
                     ))
-
-                }) {
-                   Text("Message")
+                }, modifier = Modifier.weight(1f)) {
+                    Icon(imageVector = Icons.Filled.Message , contentDescription = "message")
                 }
-                Button(onClick = { colorValue.value = 4 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Green)) {
-                    Text("Erase")
+//                Button(onClick = {
+//                    //implement message by dialog
+//                    navController.navigate(MESSAGESCREEN(
+//                        roomID = roomID, name = name
+//                    ))
+//
+//                }, modifier = Modifier.weight(1f)) {
+//                   Text("Message")
+//                }
+//                Button(onClick = { colorValue.value = 4 }, colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
+//                    , modifier = Modifier.weight(1f)) {
+//                    Text("Erase")
+//                }
+                IconButton(onClick = {
+                    colorValue.value = 4
+                }, modifier = Modifier.weight(1f)) {
+                    Icon(imageVector = Icons.Filled.RemoveCircle , contentDescription = "message")
                 }
             }
         }

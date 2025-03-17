@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.guessit.presentation.Navigation.MyApp
+import com.example.guessit.presentation.Screens.LoadingBar
 import com.example.guessit.ui.theme.GuessItTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                   Box(modifier = Modifier.padding(innerPadding)){
                       MyApp()
+                      //LoadingBar()
 
                   }
                 }
