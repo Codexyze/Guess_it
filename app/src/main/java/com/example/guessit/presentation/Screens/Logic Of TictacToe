@@ -1,0 +1,111 @@
+
+@Preview(showBackground = true)
+@Composable
+fun TicTacToeOffline() {
+
+    // 🔢 1D Board of 9 elements representing 3x3 grid
+    // Board layout (1D → 3x3 grid):
+    //  0 | 1 | 2
+    // -----------
+    //  3 | 4 | 5
+    // -----------
+    //  6 | 7 | 8
+    val board = remember {
+        mutableStateListOf("", "", "", "", "", "", "", "", "")
+    }
+
+    // 👤 Keeps track of current player ("O" or "X")
+    val currentPlayer = remember { mutableStateOf("O") }
+
+    // 🏆 Winner state - null initially, filled when someone wins
+    val winner = remember { mutableStateOf<String?>(null) }
+
+    // 🧠 Predefined WINNING COMBINATIONS using index values
+    // Each triplet (a, b, c) corresponds to a winning line
+    val winningCombinations = listOf(
+        listOf(0, 1, 2), // Top Row
+        listOf(3, 4, 5), // Middle Row
+        listOf(6, 7, 8), // Bottom Row
+        listOf(0, 3, 6), // Left Column
+        listOf(1, 4, 7), // Middle Column
+        listOf(2, 5, 8), // Right Column
+        listOf(0, 4, 8), // Diagonal (Top-Left to Bottom-Right)
+        listOf(2, 4, 6)  // Diagonal (Top-Right to Bottom-Left)
+    )
+
+    // ✅ Checks if any player has a winning combination
+    fun checkWinner() {
+        for (combo in winningCombinations) {
+
+            // Get individual indexes from the combo list
+            val a = combo[0] // First cell index
+            val b = combo[1] // Second cell index
+            val c = combo[2] // Third cell index
+
+            // 🧠 Check if all 3 positions are the same AND not empty
+            if (board[a].isNotEmpty() && board[a] == board[b] && board[a] == board[c]) {
+                winner.value = board[a] // Set the winner to either "O" or "X"
+                return // Exit early since winner is found
+            }
+        }
+    }
+
+    // 🧱 UI Layout
+    Column(
+        modifier = Modifier.fillMaxSize(), // Fill entire screen
+        verticalArrangement = Arrangement.Center, // Center vertically
+        horizontalAlignment = Alignment.CenterHorizontally // Center horizontally
+    ) {
+
+        // 🔁 Create 3 rows (row 0, 1, 2)
+        for (row in 0..2) {
+
+            Row {
+                // 🔁 Create 3 columns in each row (col 0, 1, 2)
+                for (col in 0..2) {
+                    val index = row * 3 + col // Convert (row, col) to 1D index
+
+                    /*
+                        🎯 (row, col) to index mapping:
+                        row = 0: col = 0, 1, 2 → index = 0, 1, 2
+                        row = 1: col = 0, 1, 2 → index = 3, 4, 5
+                        row = 2: col = 0, 1, 2 → index = 6, 7, 8
+                    */
+
+                    // 🧊 Create each box (cell) in the grid
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp) // Make each cell 100x100 dp
+                            .border(2.dp, Color.Black) // Add a black border around each cell
+                            .clickable(
+                                enabled = board[index].isEmpty() && winner.value == null
+                            ) {
+                                // 📥 Handle user click event
+                                if (board[index].isEmpty()) {
+                                    board[index] = currentPlayer.value // Put "O" or "X" in that cell
+                                    checkWinner() // Check if the game is won after this move
+
+                                    // 🔄 Switch to the other player after move
+                                    currentPlayer.value = if (currentPlayer.value == "O") "X" else "O"
+                                }
+                            },
+                        contentAlignment = Alignment.Center // Center text inside the box
+                    ) {
+                        // ✏️ Show current symbol in the box ("O" or "X")
+                        Text(text = board[index], fontSize = 32.sp)
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp)) // Add spacing below the board
+
+        // 🏁 Show result message (Winner or Draw)
+        if (winner.value != null) {
+            Text("Player ${winner.value} won!", fontSize = 24.sp, color = Color.Green)
+        } else if (!board.contains("")) {
+            // 🤝 If no empty cells left and no winner → It’s a draw
+            Text("It's a Draw!", fontSize = 24.sp, color = Color.Red)
+        }
+    }
+}
