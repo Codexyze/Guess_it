@@ -24,8 +24,8 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.Companion.padding(innerPadding)) {
                         // MyApp()
-                        //TicTacToeOffline()
-                        TicTacPratice()
+                        TicTacToeOffline()
+
 
                     }
                 }
