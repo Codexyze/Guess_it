@@ -19,6 +19,7 @@ import com.example.guessit.domain.StateHandeling.SendMessageToRoomMembersState
 import com.example.guessit.domain.StateHandeling.SignUpState
 import com.example.guessit.domain.StateHandeling.UploadLineCordinatesState
 import com.example.guessit.domain.StateHandeling.UploadLinesToRealTimeDataBaseState
+import com.example.guessit.domain.UseCases.UseCasesAccess
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,15 +28,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    private val repositoryImpl: RepositoryImpl,
+    private val useCaseAcess: UseCasesAccess,
     private val authInstance:FirebaseAuth):ViewModel ()
 {
-        private val _signUpState = MutableStateFlow(SignUpState())
-        val signUpState = _signUpState.asStateFlow()
-       private val _loginState = MutableStateFlow(LoginState())
-        val loginState = _loginState.asStateFlow()
+    private val _signUpState = MutableStateFlow(SignUpState())
+    val signUpState = _signUpState.asStateFlow()
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState = _loginState.asStateFlow()
     private val _getWordFromServerState= MutableStateFlow(GetWordFromServerState())
     val getWordFromServerSate = _getWordFromServerState.asStateFlow()
     private val _createRoomState = MutableStateFlow(CreateRoomState())
@@ -58,7 +60,7 @@ class AppViewModel @Inject constructor(
 
     fun signUp(email:String , password:String){
         viewModelScope.launch {
-            repositoryImpl.signUpUser(email = email, password = password).collectLatest {result->
+            useCaseAcess.signUpUserUseCase.signUpUserUseCase(email = email, password = password).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
                         _signUpState.value = SignUpState(isLoading = true)
@@ -76,7 +78,7 @@ class AppViewModel @Inject constructor(
 
     fun login(email:String ,password:String){
         viewModelScope.launch {
-            repositoryImpl.loginUser(email = email, password = password).collectLatest {result->
+            useCaseAcess.loginUserUseCase.loginUserUseCase(email = email, password = password).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
                         _loginState.value = LoginState(isLoading = true)
@@ -95,7 +97,7 @@ class AppViewModel @Inject constructor(
 
     fun getWordFromServer(){
         viewModelScope.launch {
-            repositoryImpl.getWordFromServer().collectLatest {result->
+            useCaseAcess.getWordFromServerUseCase.getWordFromServerUseCase().collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
                         _getWordFromServerState.value = GetWordFromServerState(
@@ -122,10 +124,10 @@ class AppViewModel @Inject constructor(
 
     fun createRoom(player:Player){
         viewModelScope.launch {
-            repositoryImpl.createRoomFromServer(playerData = player).collectLatest {result->
+            useCaseAcess.createRoomFromServerUseCase.createRoomFromServerUseCase(playerData = player).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
-                       _createRoomState.value = CreateRoomState(isLoading = true)
+                        _createRoomState.value = CreateRoomState(isLoading = true)
                     }
                     is ResultState.Success->{
                         _createRoomState.value = CreateRoomState(isLoading = false,  data = result.data)
@@ -141,7 +143,7 @@ class AppViewModel @Inject constructor(
 
     fun joinRoomUsingUserID(roomID:String ,player:Player){
         viewModelScope.launch {
-            repositoryImpl.joinRoomWithID(roomID = roomID, player = player).collectLatest {result->
+           useCaseAcess.joinRoomWithIDUseCase.joinRoomWithIDUseCase(roomID = roomID, player = player).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
                         _joinRoomState.value = JoinRoomState(isLoading = true)
@@ -162,21 +164,21 @@ class AppViewModel @Inject constructor(
     }
     fun getAllPlayersFromRoom(roomID: String){
         viewModelScope.launch {
-            repositoryImpl.getAllPlayersFromRoom(roomID = roomID).collectLatest {result->
-               when(result){
-                   is ResultState.Loading->{
-                     _getAllPlayersFromRoomState.value = GetAllPlayerInRoomState(isLoading = true)
-                   }
-                   is ResultState.Success->{
-                       _getAllPlayersFromRoomState.value = GetAllPlayerInRoomState(isLoading = false,
-                           data = result.data)
-                   }
-                   is ResultState.Error->{
-                       _getAllPlayersFromRoomState.value =GetAllPlayerInRoomState(
-                           isLoading = false, error = result.message
-                       )
-                   }
-               }
+            useCaseAcess.getAllPlayersFromRoomUseCase.getAllPlayersFromRoomUseCase(roomID = roomID).collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                        _getAllPlayersFromRoomState.value = GetAllPlayerInRoomState(isLoading = true)
+                    }
+                    is ResultState.Success->{
+                        _getAllPlayersFromRoomState.value = GetAllPlayerInRoomState(isLoading = false,
+                            data = result.data)
+                    }
+                    is ResultState.Error->{
+                        _getAllPlayersFromRoomState.value =GetAllPlayerInRoomState(
+                            isLoading = false, error = result.message
+                        )
+                    }
+                }
             }
         }
 
@@ -184,12 +186,12 @@ class AppViewModel @Inject constructor(
 
     fun uploadLiveLineCordinates(lineCordinates:Lines,roomID: String){
         viewModelScope.launch {
-            repositoryImpl.uploadAllPlayersCanvasPoints(lineCordinates = lineCordinates, roomID = roomID).collectLatest {result->
+            useCaseAcess.uploadAllPlayersCanvasPoints.uploadAllPlayersCanvasPointsUseCase(lineCordinates = lineCordinates, roomID = roomID).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
-                       _uploadLiveLineCordinatesState.value = UploadLineCordinatesState(
-                           isLoading = true
-                       )
+                        _uploadLiveLineCordinatesState.value = UploadLineCordinatesState(
+                            isLoading = true
+                        )
                     }
                     is ResultState.Error->{
                         _uploadLiveLineCordinatesState.value = UploadLineCordinatesState(
@@ -207,36 +209,36 @@ class AppViewModel @Inject constructor(
     }
     fun uploadLiveLinesToRealTimeDatabase(lines:LiveLine,roomID: String){
         viewModelScope.launch {
-           repositoryImpl.uploadLineTorealTimeDatabase(lines = lines, roomID = roomID).collectLatest {result->
-               when(result){
-                   is ResultState.Error->{
-                       _uploadToRealTimeDatabaseState.value = UploadLinesToRealTimeDataBaseState(
-                           isLoading = false, error = result.message
-                       )
-                   }
-                   is ResultState.Success->{
-                       _uploadToRealTimeDatabaseState.value = UploadLinesToRealTimeDataBaseState(
-                           isLoading = false , data =  result.data
-                       )
-                   }
-                   is ResultState.Loading->{
-                       _uploadToRealTimeDatabaseState.value =UploadLinesToRealTimeDataBaseState(
-                           isLoading = true
-                       )
-                   }
-               }
-           }
+            useCaseAcess.uploadLineToRealTimeDataBaseUseCase.uploadLineTorealTimeDatabaseUseCase(lines = lines, roomID = roomID).collectLatest {result->
+                when(result){
+                    is ResultState.Error->{
+                        _uploadToRealTimeDatabaseState.value = UploadLinesToRealTimeDataBaseState(
+                            isLoading = false, error = result.message
+                        )
+                    }
+                    is ResultState.Success->{
+                        _uploadToRealTimeDatabaseState.value = UploadLinesToRealTimeDataBaseState(
+                            isLoading = false , data =  result.data
+                        )
+                    }
+                    is ResultState.Loading->{
+                        _uploadToRealTimeDatabaseState.value =UploadLinesToRealTimeDataBaseState(
+                            isLoading = true
+                        )
+                    }
+                }
+            }
         }
     }
 
     fun getRealtimeLines(roomID: String){
         viewModelScope.launch {
-            repositoryImpl.getRealtimeLines(roomID = roomID).collectLatest {result->
+            useCaseAcess.getRealTimeLineUseCase.getRealtimeLinesUseCase(roomID = roomID).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
-                      _getRealtimeLinesState.value = GetRealTimeLines(
-                          isLoading = true
-                      )
+                        _getRealtimeLinesState.value = GetRealTimeLines(
+                            isLoading = true
+                        )
                     }
                     is ResultState.Success->{
                         _getRealtimeLinesState.value = GetRealTimeLines(
@@ -257,7 +259,7 @@ class AppViewModel @Inject constructor(
 
     fun sendMessageToRoomMembers(roomID: String,message: Message){
         viewModelScope.launch {
-            repositoryImpl.sendMessageToAllRoomMembers(roomID = roomID, message = message).collectLatest {result->
+           useCaseAcess.sendMessageToAllRoomMemberUseCase.sendMessageToAllRoomMembersUseCase(roomID = roomID, message = message).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
                         _sendMessageToRoomMembersState.value = SendMessageToRoomMembersState(isLoading = true)
@@ -279,7 +281,7 @@ class AppViewModel @Inject constructor(
 
     fun getAllMessageFromRoom(roomID: String){
         viewModelScope.launch {
-            repositoryImpl.getAllMessagesFromRoom(roomID = roomID).collectLatest {result->
+            useCaseAcess.getAllMessageFromRoomUseCase.getAllMessagesFromRoom(roomID = roomID).collectLatest {result->
                 when(result){
                     is ResultState.Loading->{
                         _getAllMessageFromRoomState.value = GetAllMessageFromRoomState(
@@ -304,6 +306,5 @@ class AppViewModel @Inject constructor(
         }
 
     }
-
 
 }
