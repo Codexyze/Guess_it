@@ -1,6 +1,7 @@
 package com.example.guessit.di
 
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.example.guessit.domain.Repository.Repository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -36,7 +37,10 @@ object DiModule {
         return Firebase.database
     }
 
-
+    @Provides
+    fun provideRepository(authInstance:FirebaseAuth): Repository{
+        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore(), firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
+    }
 
 
 }

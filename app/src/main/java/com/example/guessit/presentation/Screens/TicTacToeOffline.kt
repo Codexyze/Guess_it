@@ -1,13 +1,11 @@
 package com.example.guessit.presentation.Screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.sp
 
 @Preview(showBackground = true)
 @Composable
-fun TicTacToeOffline(modifier: Modifier = Modifier) {
+fun TicTacToeOffline() {
     val board = remember { mutableStateListOf("","","","","","","","","") }
     val winnerplayer = remember { mutableStateOf<String>("") }
     val playerTurn = remember { mutableStateOf("X") }

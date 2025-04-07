@@ -30,3 +30,9 @@ object JOINSCREEN
 data class MESSAGESCREEN(
     val roomID:String,val name:String
 )
+
+@Serializable
+object TICTACTOESELECTIONSCREEN
+
+@Serializable
+object TICTACTOEMULTIPLAYEROFFLINE

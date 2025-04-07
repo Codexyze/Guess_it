@@ -16,6 +16,8 @@ import com.example.guessit.presentation.Screens.MessageScreen
 import com.example.guessit.presentation.Screens.PaintScreen
 import com.example.guessit.presentation.Screens.PlayScreen
 import com.example.guessit.presentation.Screens.SignUpScreen
+import com.example.guessit.presentation.Screens.TicTacToeOffline
+import com.example.guessit.presentation.Screens.TicTacToeSelectionScreen
 import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -62,6 +64,12 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         composable<MESSAGESCREEN> {args->
             val argsdata:MESSAGESCREEN = args.toRoute()
             MessageScreen(roomID = argsdata.roomID, name = argsdata.name)
+        }
+        composable<TICTACTOESELECTIONSCREEN> {
+            TicTacToeSelectionScreen(navController = navController)
+        }
+        composable<TICTACTOEMULTIPLAYEROFFLINE> {
+            TicTacToeOffline()
         }
 
     }

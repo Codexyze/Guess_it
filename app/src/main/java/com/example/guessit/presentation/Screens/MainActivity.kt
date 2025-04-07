@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.guessit.presentation.Navigation.MyApp
 import com.example.guessit.ui.theme.GuessItTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,10 +24,8 @@ class MainActivity : ComponentActivity() {
             GuessItTheme {
                 Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.Companion.padding(innerPadding)) {
-                        // MyApp()
-                        TicTacToeOffline()
-
-
+                         MyApp()
+                        //TicTacToeOffline()
                     }
                 }
             }

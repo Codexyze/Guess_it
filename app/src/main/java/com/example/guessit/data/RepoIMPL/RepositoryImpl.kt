@@ -17,10 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-
 import javax.inject.Inject
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+
 
 class RepositoryImpl @Inject constructor(private val authInstance:FirebaseAuth
 ,private val firebaseFirestore: FirebaseFirestore,
@@ -198,65 +196,7 @@ override suspend fun getAllPlayersFromRoom(roomID: String): Flow<ResultState<Lis
             close()
         }
     }
-//
-//override suspend fun getAllMessagesFromRoom(roomID: String): Flow<ResultState<List<Message>>> = callbackFlow {
-//    trySend(ResultState.Loading)
-//
-//    firebaseRealtimeRefrence.reference
-//        .child("${roomID}_$randomvalue")
-//        .child(Constants.MESSAGES)
-//        .get()
-//        .addOnSuccessListener { datasnapshot ->
-//            val messages = mutableListOf<Message>()
-//
-//            for (child in datasnapshot.children) {
-//                val message = child.getValue(Message::class.java)
-//                message?.let { messages.add(it) } // Add only if not null
-//            }
-//
-//            trySend(ResultState.Success(messages))
-//        }
-//        .addOnFailureListener {
-//            trySend(ResultState.Error(it.message.toString()))
-//        }
-//
-//    awaitClose {
-//        close()
-//    }
-//}
 
-//    override suspend fun getAllMessagesFromRoom(roomID: String): Flow<ResultState<List<Message>>> = callbackFlow {
-//        trySend(ResultState.Loading) // Indicate loading state
-//
-//        firebaseRealtimeRefrence.reference
-//            .child("${roomID}_$randomvalue") // Navigate to the specific room ID
-//            .child(Constants.MESSAGES) // Access the "messages" node
-//            .get()
-//            .addOnSuccessListener { datasnapshot ->
-//               // Log.d("MESSAGEDATA", "Path: ${datasnapshot.ref.path}") // Log the reference path
-//                Log.d("MESSAGEDATA", "Children Count: ${datasnapshot.childrenCount}") // Log the number of messages
-//
-//                if (!datasnapshot.exists()) {
-//                    Log.e("MESSAGEDATA", "No messages found!")
-//                    trySend(ResultState.Error("No messages found!"))
-//                }
-//
-//                // Convert each child node into a Message object, filtering out any null values
-//                val messages = datasnapshot.children.mapNotNull { child ->
-//                    Log.d("MESSAGEDATA", "Processing message: ${child.key}") // Log each message key
-//                    child.getValue(Message::class.java) // Deserialize the data
-//                }
-//
-//                Log.d("MESSAGEDATA", "Fetched Messages: $messages") // Log the final message list
-//                trySend(ResultState.Success(messages)) // Send success state with message list
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.e("MESSAGEDATA", "Firebase Error: ${exception.message}")
-//                trySend(ResultState.Error(exception.message.toString())) // Send error state
-//            }
-//
-//        awaitClose { close() } // Close the flow when not needed
-//    }
     override suspend fun getAllMessagesFromRoom(roomID: String): Flow<ResultState<List<Message>>> = callbackFlow {
         trySend(ResultState.Loading)
 
