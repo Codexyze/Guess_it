@@ -1,13 +1,23 @@
 package com.example.guessit.di
 
 import com.example.guessit.data.RepoIMPL.CreateRoomRepositoryImpl
+import com.example.guessit.data.RepoIMPL.GetPlayersRepositoryImpl
+import com.example.guessit.data.RepoIMPL.GetRealTimeLinesRepositoryImpl
 import com.example.guessit.data.RepoIMPL.JoinRoomRepositoryimpl
+import com.example.guessit.data.RepoIMPL.MessageRepositoryImpl
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.example.guessit.data.RepoIMPL.UploadLinesRepositoryImpl
 import com.example.guessit.data.RepoIMPL.UserAuthRepositoryImpl
+import com.example.guessit.data.RepoIMPL.WordsRepositoryImpl
 import com.example.guessit.domain.Repository.CreateRoomRepository
+import com.example.guessit.domain.Repository.GetPlayersRepository
+import com.example.guessit.domain.Repository.GetRealTimeLinesRepository
 import com.example.guessit.domain.Repository.JoinRoomRepository
+import com.example.guessit.domain.Repository.MessagesRepository
 import com.example.guessit.domain.Repository.Repository
+import com.example.guessit.domain.Repository.UploadLinesRepository
 import com.example.guessit.domain.Repository.UserAuthenticationRepository
+import com.example.guessit.domain.Repository.WordsRepository
 import com.example.guessit.domain.UseCases.CreateRoomFromServerUseCase
 import com.example.guessit.domain.UseCases.GetAllMessageFromRoomUseCase
 import com.example.guessit.domain.UseCases.GetAllPlayersFromRoomUseCase
@@ -63,17 +73,17 @@ object DiModule {
     @Provides
     fun UseCaseAcessObject (): UseCasesAccess{
         return UseCasesAccess(
-            createRoomFromServerUseCase = CreateRoomFromServerUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            getAllMessageFromRoomUseCase = GetAllMessageFromRoomUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            getAllPlayersFromRoomUseCase = GetAllPlayersFromRoomUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            getRealTimeLineUseCase = GetRealTimeLineUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            getWordFromServerUseCase = GetWordFromServerUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            joinRoomWithIDUseCase = JoinRoomWithIDUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            loginUserUseCase = LoginUserUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            sendMessageToAllRoomMemberUseCase = SendMessageToAllRoomMemberUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            uploadAllPlayersCanvasPoints = UploadAllPlayersCanvasPoints(repository = provideRepository(authInstance = provideAuthInstance())),
-            uploadLineToRealTimeDataBaseUseCase = UploadLineToRealTimeDataBaseUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
-            signUpUserUseCase = SignUpUserUseCase(repository = provideRepository(authInstance = provideAuthInstance()))
+            createRoomFromServerUseCase = CreateRoomFromServerUseCase(repository = provideCreateRoomInterfaceObject()),
+            getAllMessageFromRoomUseCase = GetAllMessageFromRoomUseCase(repository = provideMessageRepositoryInterfaceObject()),
+            getAllPlayersFromRoomUseCase = GetAllPlayersFromRoomUseCase(repository = providegetPlayersReoImplObject()),
+            getRealTimeLineUseCase = GetRealTimeLineUseCase(repository = provideGetRealTimeLineRepoImpl()),
+            getWordFromServerUseCase = GetWordFromServerUseCase(repository = provideWordsRepoImplObject()),
+            joinRoomWithIDUseCase = JoinRoomWithIDUseCase(repository = provideJoinRoomInterfaceObject()),
+            loginUserUseCase = LoginUserUseCase(repository = provideUserAuthInterfaceInstance()),
+            sendMessageToAllRoomMemberUseCase = SendMessageToAllRoomMemberUseCase(repository = provideMessageRepositoryInterfaceObject()),
+            uploadAllPlayersCanvasPoints = UploadAllPlayersCanvasPoints(repository =provideUploadLinesRepoImplObject()),
+            uploadLineToRealTimeDataBaseUseCase = UploadLineToRealTimeDataBaseUseCase(repository = provideUploadLinesRepoImplObject()),
+            signUpUserUseCase = SignUpUserUseCase(repository = provideUserAuthInterfaceInstance())
         )
     }
 
@@ -96,6 +106,42 @@ object DiModule {
             , authInstance = provideAuthInstance()
         )
     }
+    fun provideWordsRepoImplObject(): WordsRepository{
+        return WordsRepositoryImpl(
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase(),
+            authInstance = provideAuthInstance()
+        )
+    }
 
+    fun providegetPlayersReoImplObject(): GetPlayersRepository{
+        return GetPlayersRepositoryImpl(
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase(),
+            authInstance = provideAuthInstance()
+        )
+    }
+
+    fun provideUploadLinesRepoImplObject(): UploadLinesRepository{
+        return UploadLinesRepositoryImpl(
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase(),
+            authInstance = provideAuthInstance()
+        )
+    }
+    fun provideGetRealTimeLineRepoImpl(): GetRealTimeLinesRepository{
+        return GetRealTimeLinesRepositoryImpl(
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase(),
+            authInstance = provideAuthInstance()
+        )
+    }
+    fun provideMessageRepositoryInterfaceObject(): MessagesRepository{
+        return MessageRepositoryImpl(
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase(),
+            authInstance = provideAuthInstance()
+        )
+    }
 
 }
