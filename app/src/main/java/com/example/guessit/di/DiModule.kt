@@ -1,7 +1,13 @@
 package com.example.guessit.di
 
+import com.example.guessit.data.RepoIMPL.CreateRoomRepositoryImpl
+import com.example.guessit.data.RepoIMPL.JoinRoomRepositoryimpl
 import com.example.guessit.data.RepoIMPL.RepositoryImpl
+import com.example.guessit.data.RepoIMPL.UserAuthRepositoryImpl
+import com.example.guessit.domain.Repository.CreateRoomRepository
+import com.example.guessit.domain.Repository.JoinRoomRepository
 import com.example.guessit.domain.Repository.Repository
+import com.example.guessit.domain.Repository.UserAuthenticationRepository
 import com.example.guessit.domain.UseCases.CreateRoomFromServerUseCase
 import com.example.guessit.domain.UseCases.GetAllMessageFromRoomUseCase
 import com.example.guessit.domain.UseCases.GetAllPlayersFromRoomUseCase
@@ -68,6 +74,26 @@ object DiModule {
             uploadAllPlayersCanvasPoints = UploadAllPlayersCanvasPoints(repository = provideRepository(authInstance = provideAuthInstance())),
             uploadLineToRealTimeDataBaseUseCase = UploadLineToRealTimeDataBaseUseCase(repository = provideRepository(authInstance = provideAuthInstance())),
             signUpUserUseCase = SignUpUserUseCase(repository = provideRepository(authInstance = provideAuthInstance()))
+        )
+    }
+
+    @Provides
+    fun provideUserAuthInterfaceInstance(): UserAuthenticationRepository{
+        return UserAuthRepositoryImpl(authInstance = provideAuthInstance(),
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
+    }
+
+    fun provideCreateRoomInterfaceObject(): CreateRoomRepository{
+        return CreateRoomRepositoryImpl(firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase()
+            , firebaseFirestore = providefirebasefirestore()
+            , authInstance = provideAuthInstance())
+    }
+    fun provideJoinRoomInterfaceObject(): JoinRoomRepository{
+        return JoinRoomRepositoryimpl(
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase()
+            , firebaseFirestore = providefirebasefirestore()
+            , authInstance = provideAuthInstance()
         )
     }
 
