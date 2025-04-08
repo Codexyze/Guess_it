@@ -5,7 +5,6 @@ import com.example.guessit.data.RepoIMPL.GetPlayersRepositoryImpl
 import com.example.guessit.data.RepoIMPL.GetRealTimeLinesRepositoryImpl
 import com.example.guessit.data.RepoIMPL.JoinRoomRepositoryimpl
 import com.example.guessit.data.RepoIMPL.MessageRepositoryImpl
-import com.example.guessit.data.RepoIMPL.RepositoryImpl
 import com.example.guessit.data.RepoIMPL.UploadLinesRepositoryImpl
 import com.example.guessit.data.RepoIMPL.UserAuthRepositoryImpl
 import com.example.guessit.data.RepoIMPL.WordsRepositoryImpl
@@ -14,7 +13,6 @@ import com.example.guessit.domain.Repository.GetPlayersRepository
 import com.example.guessit.domain.Repository.GetRealTimeLinesRepository
 import com.example.guessit.domain.Repository.JoinRoomRepository
 import com.example.guessit.domain.Repository.MessagesRepository
-import com.example.guessit.domain.Repository.Repository
 import com.example.guessit.domain.Repository.UploadLinesRepository
 import com.example.guessit.domain.Repository.UserAuthenticationRepository
 import com.example.guessit.domain.Repository.WordsRepository
@@ -50,10 +48,10 @@ object DiModule {
         return FirebaseAuth.getInstance()
     }
 
-    @Provides
-    fun provideRepoImplInstnace(authInstance:FirebaseAuth): RepositoryImpl{
-        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore(), firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
-    }
+//    @Provides
+//    fun provideRepoImplInstnace(authInstance:FirebaseAuth): RepositoryImpl{
+//        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore(), firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
+//    }
 
     @Provides
     fun providefirebasefirestore():FirebaseFirestore{
@@ -65,10 +63,10 @@ object DiModule {
         return Firebase.database
     }
 
-    @Provides
-    fun provideRepository(authInstance:FirebaseAuth): Repository{
-        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore(), firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
-    }
+//    @Provides
+//    fun provideRepository(authInstance:FirebaseAuth): Repository{
+//        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore(), firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
+//    }
 
     @Provides
     fun UseCaseAcessObject (): UseCasesAccess{
