@@ -2,12 +2,13 @@ package com.example.guessit.presentation.Navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.guessit.presentation.Screens.CreateOrJoinSelectionScreen
 import com.example.guessit.presentation.Screens.CreateRoomScreen
 import com.example.guessit.presentation.Screens.HomeScreen
 import com.example.guessit.presentation.Screens.JoinRoomScreen
@@ -16,13 +17,13 @@ import com.example.guessit.presentation.Screens.MessageScreen
 import com.example.guessit.presentation.Screens.PaintScreen
 import com.example.guessit.presentation.Screens.PlayScreen
 import com.example.guessit.presentation.Screens.SignUpScreen
+import com.example.guessit.presentation.Screens.TicTacToeCreateRoomScreen
 import com.example.guessit.presentation.Screens.TicTacToeOffline
 import com.example.guessit.presentation.Screens.TicTacToeSelectionScreen
-import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
-
+@Preview(showBackground = true)
 @Composable
-fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
+fun MyApp () {
     val navController = rememberNavController()
     LaunchedEffect(Unit) {
         val currentUser= FirebaseAuth.getInstance().currentUser?.uid
@@ -70,6 +71,12 @@ fun MyApp (viewModel: AppViewModel = hiltViewModel()) {
         }
         composable<TICTACTOEMULTIPLAYEROFFLINE> {
             TicTacToeOffline()
+        }
+        composable<TICTACTOECREATEROOMSCREEN>{
+            TicTacToeCreateRoomScreen()
+        }
+        composable<CREATEORJOINTICTACTOESCREEN>{
+            CreateOrJoinSelectionScreen(navController = navController)
         }
 
     }

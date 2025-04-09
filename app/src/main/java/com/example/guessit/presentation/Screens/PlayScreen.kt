@@ -38,14 +38,14 @@ import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.Navigation.MESSAGESCREEN
-import com.example.guessit.presentation.ViewModel.AppViewModel
+import com.example.guessit.presentation.ViewModel.DrawingViewModel
 import kotlinx.coroutines.delay
 
 
 @Composable
 fun PlayScreen(
     navController: NavController,
-    viewmodel: AppViewModel = hiltViewModel(),
+    viewmodel: DrawingViewModel= hiltViewModel(),
     roomID: String,
     name:String
 ) {

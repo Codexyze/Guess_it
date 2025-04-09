@@ -41,7 +41,6 @@ import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.Navigation.PLAYSCREEN
-import com.example.guessit.presentation.ViewModel.AppViewModel
 import com.example.guessit.presentation.ViewModel.CreateRoomViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast

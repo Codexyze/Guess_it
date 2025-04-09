@@ -25,10 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
-import com.example.guessit.presentation.ViewModel.AppViewModel
 
 @Composable
-fun PaintScreen(navController: NavController,viewmodel:AppViewModel= hiltViewModel()) {
+fun PaintScreen(navController: NavController) {
     val lines = remember { mutableStateListOf<Lines>() }
     val colorvalue= remember { mutableStateOf(0) }
     var colorVariable:Color = Color.DarkGray

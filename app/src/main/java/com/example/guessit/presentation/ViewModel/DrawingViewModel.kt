@@ -2,16 +2,11 @@ package com.example.guessit.presentation.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.data.PainterDataClass.Lines
 import com.example.guessit.data.PainterDataClass.LiveLine
-import com.example.guessit.data.dataClasses.Player
-import com.example.guessit.domain.StateHandeling.CreateRoomState
-import com.example.guessit.domain.StateHandeling.GetAllMessageFromRoomState
 import com.example.guessit.domain.StateHandeling.GetAllPlayerInRoomState
 import com.example.guessit.domain.StateHandeling.GetRealTimeLines
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
-import com.example.guessit.domain.StateHandeling.JoinRoomState
 import com.example.guessit.domain.StateHandeling.ResultState
 
 import com.example.guessit.domain.StateHandeling.UploadLineCordinatesState
@@ -27,15 +22,13 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class AppViewModel @Inject constructor(
+class DrawingViewModel @Inject constructor(
     private val useCaseAcess: UseCasesAccess,
     private val authInstance:FirebaseAuth):ViewModel ()
 {
 
     private val _getWordFromServerState= MutableStateFlow(GetWordFromServerState())
     val getWordFromServerSate = _getWordFromServerState.asStateFlow()
-    private val _joinRoomState = MutableStateFlow(JoinRoomState())
-    val joinRoomState = _joinRoomState.asStateFlow()
     private  val _getAllPlayersFromRoomState = MutableStateFlow(GetAllPlayerInRoomState())
     val getAllPlayersFromRoomState = _getAllPlayersFromRoomState.asStateFlow()
     private val _uploadLiveLineCordinatesState = MutableStateFlow(UploadLineCordinatesState())
@@ -172,7 +165,7 @@ class AppViewModel @Inject constructor(
 
     }
 
-
-
 }
-
+// val getWordsFromServerState = viewmodel.getWordFromServerSate.collectAsState()
+//    val getAllPlayerInRoomState = viewmodel.getAllPlayersFromRoomState.collectAsState()
+//    val getRealTimeLinesState = viewmodel.getRealtimeLinesState.collectAsState()
