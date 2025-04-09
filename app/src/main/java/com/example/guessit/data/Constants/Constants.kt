@@ -8,4 +8,5 @@ object Constants {
     const val PLAYERS="Players"
     const val CANVASLINES="CanvasLines"
     const val MESSAGES="messages"
+    const val TICTACTOEROOM="TicTacToeRoom"
 }

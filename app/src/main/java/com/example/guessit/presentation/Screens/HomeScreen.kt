@@ -16,17 +16,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.presentation.Navigation.CREATEROOMSCREEN
 import com.example.guessit.presentation.Navigation.JOINSCREEN
 import com.example.guessit.presentation.Navigation.PAINTSCREEN
 import com.example.guessit.presentation.Navigation.TICTACTOESELECTIONSCREEN
-import com.example.guessit.presentation.ViewModel.AppViewModel
 
 @Composable
-fun HomeScreen(navController: NavController,viewModel: AppViewModel= hiltViewModel()) {
+fun HomeScreen(navController: NavController) {
    Column(modifier = Modifier.fillMaxSize()) {
        Spacer(modifier = Modifier.fillMaxHeight(0.05f))
      OutlinedButton(onClick = {

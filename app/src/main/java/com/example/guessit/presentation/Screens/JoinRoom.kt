@@ -28,14 +28,14 @@ import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.Navigation.PLAYSCREEN
-import com.example.guessit.presentation.ViewModel.AppViewModel
+import com.example.guessit.presentation.ViewModel.JoinRoomViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
 fun JoinRoomScreen(
     navController: NavController,
-    viewmodel: AppViewModel = hiltViewModel()
+    viewmodel: JoinRoomViewModel = hiltViewModel()
 ) {
     val currentuser = FirebaseAuth.getInstance().currentUser?.uid
     val joinRoomState = viewmodel.joinRoomState.collectAsState()

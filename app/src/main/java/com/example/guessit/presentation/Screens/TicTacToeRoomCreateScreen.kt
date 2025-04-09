@@ -2,7 +2,6 @@ package com.example.guessit.presentation.Screens
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,7 +47,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
-fun CreateRoomScreen(viewmodel: CreateRoomViewModel = hiltViewModel(), navController: NavController) {
+fun CreateTicTacToeRoom(viewmodel: CreateRoomViewModel = hiltViewModel(), navController: NavController) {
     val clipboardManager = LocalClipboardManager.current
     val userID = remember { mutableStateOf("") }
     val userName = remember { mutableStateOf("") }

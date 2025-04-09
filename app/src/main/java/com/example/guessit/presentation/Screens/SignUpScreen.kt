@@ -1,7 +1,6 @@
 package com.example.guessit.presentation.Screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -42,11 +40,11 @@ import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.presentation.Navigation.HOMESCREEN
 import com.example.guessit.presentation.Navigation.LOGINSCREEN
-import com.example.guessit.presentation.ViewModel.AppViewModel
+import com.example.guessit.presentation.ViewModel.UserAuthenticationViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
-fun SignUpScreen(navController: NavController,viewModel: AppViewModel= hiltViewModel()) {
+fun SignUpScreen(navController: NavController,viewModel: UserAuthenticationViewModel= hiltViewModel()) {
 
 
     val context = LocalContext.current

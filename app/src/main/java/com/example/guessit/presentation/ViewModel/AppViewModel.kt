@@ -12,10 +12,8 @@ import com.example.guessit.domain.StateHandeling.GetAllPlayerInRoomState
 import com.example.guessit.domain.StateHandeling.GetRealTimeLines
 import com.example.guessit.domain.StateHandeling.GetWordFromServerState
 import com.example.guessit.domain.StateHandeling.JoinRoomState
-import com.example.guessit.domain.StateHandeling.LoginState
 import com.example.guessit.domain.StateHandeling.ResultState
-import com.example.guessit.domain.StateHandeling.SendMessageToRoomMembersState
-import com.example.guessit.domain.StateHandeling.SignUpState
+
 import com.example.guessit.domain.StateHandeling.UploadLineCordinatesState
 import com.example.guessit.domain.StateHandeling.UploadLinesToRealTimeDataBaseState
 import com.example.guessit.domain.UseCases.UseCasesAccess
@@ -33,14 +31,9 @@ class AppViewModel @Inject constructor(
     private val useCaseAcess: UseCasesAccess,
     private val authInstance:FirebaseAuth):ViewModel ()
 {
-    private val _signUpState = MutableStateFlow(SignUpState())
-    val signUpState = _signUpState.asStateFlow()
-    private val _loginState = MutableStateFlow(LoginState())
-    val loginState = _loginState.asStateFlow()
+
     private val _getWordFromServerState= MutableStateFlow(GetWordFromServerState())
     val getWordFromServerSate = _getWordFromServerState.asStateFlow()
-    private val _createRoomState = MutableStateFlow(CreateRoomState())
-    val createRoomState = _createRoomState.asStateFlow()
     private val _joinRoomState = MutableStateFlow(JoinRoomState())
     val joinRoomState = _joinRoomState.asStateFlow()
     private  val _getAllPlayersFromRoomState = MutableStateFlow(GetAllPlayerInRoomState())
@@ -51,48 +44,9 @@ class AppViewModel @Inject constructor(
     val uploadToRealTimeDatabaseState = _uploadToRealTimeDatabaseState.asStateFlow()
     private val _getRealtimeLinesState = MutableStateFlow(GetRealTimeLines())
     val getRealtimeLinesState = _getRealtimeLinesState.asStateFlow()
-    private  val _sendMessageToRoomMembersState = MutableStateFlow(SendMessageToRoomMembersState())
-    val sendMessageToRoomMembersState =_sendMessageToRoomMembersState.asStateFlow()
-    private val _getAllMessageFromRoomState = MutableStateFlow(GetAllMessageFromRoomState())
-    val getAllMessageFromRoomState = _getAllMessageFromRoomState.asStateFlow()
 
 
-    fun signUp(email:String , password:String){
-        viewModelScope.launch {
-            useCaseAcess.signUpUserUseCase.signUpUserUseCase(email = email, password = password).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                        _signUpState.value = SignUpState(isLoading = true)
-                    }
-                    is ResultState.Success->{
-                        _signUpState.value = SignUpState(isLoading = false, data = result.data)
-                    }
-                    is ResultState.Error->{
-                        _signUpState.value = SignUpState(isLoading = false, error = result.message)
-                    }
-                }
-            }
-        }
-    }
 
-    fun login(email:String ,password:String){
-        viewModelScope.launch {
-            useCaseAcess.loginUserUseCase.loginUserUseCase(email = email, password = password).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                        _loginState.value = LoginState(isLoading = true)
-                    }
-                    is ResultState.Success->{
-                        _loginState.value = LoginState(isLoading = false, data = result.data)
-                    }
-                    is ResultState.Error ->{
-                        _loginState.value =  LoginState(isLoading = false, error = result.message)
-                    }
-                }
-            }
-        }
-
-    }
 
     fun getWordFromServer(){
         viewModelScope.launch {
@@ -121,46 +75,8 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun createRoom(player:Player){
-        viewModelScope.launch {
-            useCaseAcess.createRoomFromServerUseCase.createRoomFromServerUseCase(playerData = player).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                        _createRoomState.value = CreateRoomState(isLoading = true)
-                    }
-                    is ResultState.Success->{
-                        _createRoomState.value = CreateRoomState(isLoading = false,  data = result.data)
-                    }
-                    is ResultState.Error->{
-                        _createRoomState.value = CreateRoomState(isLoading = false, error = result.message)
-                    }
-                }
-            }
-        }
 
-    }
 
-    fun joinRoomUsingUserID(roomID:String ,player:Player){
-        viewModelScope.launch {
-           useCaseAcess.joinRoomWithIDUseCase.joinRoomWithIDUseCase(roomID = roomID, player = player).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                        _joinRoomState.value = JoinRoomState(isLoading = true)
-                    }
-                    is ResultState.Error->{
-                        _joinRoomState.value = JoinRoomState(
-                            isLoading = false , error = result.message
-                        )
-                    }
-                    is ResultState.Success->{
-                        _joinRoomState.value = JoinRoomState(
-                            isLoading = false, data = result.data
-                        )
-                    }
-                }
-            }
-        }
-    }
     fun getAllPlayersFromRoom(roomID: String){
         viewModelScope.launch {
             useCaseAcess.getAllPlayersFromRoomUseCase.getAllPlayersFromRoomUseCase(roomID = roomID).collectLatest {result->
@@ -256,54 +172,7 @@ class AppViewModel @Inject constructor(
 
     }
 
-    fun sendMessageToRoomMembers(roomID: String,message: Message){
-        viewModelScope.launch {
-           useCaseAcess.sendMessageToAllRoomMemberUseCase.sendMessageToAllRoomMembersUseCase(roomID = roomID, message = message).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                        _sendMessageToRoomMembersState.value = SendMessageToRoomMembersState(isLoading = true)
-                    }
-                    is ResultState.Error->{
-                        _sendMessageToRoomMembersState.value = SendMessageToRoomMembersState(
-                            isLoading = false, error = result.message
-                        )
-                    }
-                    is ResultState.Success->{
-                        _sendMessageToRoomMembersState.value =SendMessageToRoomMembersState(
-                            isLoading = false, data = result.data
-                        )
-                    }
-                }
-            }
-        }
-    }
 
-    fun getAllMessageFromRoom(roomID: String){
-        viewModelScope.launch {
-            useCaseAcess.getAllMessageFromRoomUseCase.getAllMessagesFromRoom(roomID = roomID).collectLatest {result->
-                when(result){
-                    is ResultState.Loading->{
-                        _getAllMessageFromRoomState.value = GetAllMessageFromRoomState(
-                            isLoading = true
-                        )
-                    }
-                    is ResultState.Success->{
-                        _getAllMessageFromRoomState.value =GetAllMessageFromRoomState(
-                            isLoading = false, data = result.data
-                        )
-
-                    }
-                    is ResultState.Error->{
-                        _getAllMessageFromRoomState.value =GetAllMessageFromRoomState(
-                            isLoading = false, error = result.message
-                        )
-
-                    }
-                }
-
-            }
-        }
-
-    }
 
 }
+

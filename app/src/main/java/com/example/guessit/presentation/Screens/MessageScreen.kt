@@ -32,11 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.guessit.data.MessageDataClasses.Message
-import com.example.guessit.presentation.ViewModel.AppViewModel
+import com.example.guessit.presentation.ViewModel.MessagesViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun MessageScreen(roomID: String, name: String, viewmodel: AppViewModel = hiltViewModel()) {
+fun MessageScreen(roomID: String, name: String, viewmodel: MessagesViewModel = hiltViewModel()) {
     val message = remember { mutableStateOf("") }
     val context = LocalContext.current
     val userID = FirebaseAuth.getInstance().currentUser?.uid

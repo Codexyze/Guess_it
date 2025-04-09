@@ -40,11 +40,11 @@ import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.presentation.Navigation.HOMESCREEN
 import com.example.guessit.presentation.Navigation.SIGNUPSCREEN
-import com.example.guessit.presentation.ViewModel.AppViewModel
+import com.example.guessit.presentation.ViewModel.UserAuthenticationViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
-fun LoginScreen(navController: NavController,viewModel: AppViewModel = hiltViewModel()) {
+fun LoginScreen(navController: NavController,viewModel: UserAuthenticationViewModel = hiltViewModel()) {
     val loginState = viewModel.loginState.collectAsState()
     val context = LocalContext.current
     val email = remember { mutableStateOf("") }
