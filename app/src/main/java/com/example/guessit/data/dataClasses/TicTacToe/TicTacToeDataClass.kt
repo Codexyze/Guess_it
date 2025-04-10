@@ -1,8 +1,8 @@
 package com.example.guessit.data.dataClasses.TicTacToe
 
 data class TicTacToeDataClass(
-    val player1 : String = "",
-    val player2 : String ="",
+    val player1LeaderUID : String = "",
+    val player2UID : String ="",
     val board : List<String> =listOf("","","","","","","","",""),
     val winner : String="",
     val movesCounter : Int =0,

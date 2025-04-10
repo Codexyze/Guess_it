@@ -1,6 +1,5 @@
 package com.example.guessit.presentation.Screens
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,7 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.data.dataClasses.TicTacToe.TicTacToeDataClass
-import com.example.guessit.presentation.Navigation.TICTACTOEMULTIPLAYEROFFLINE
+import com.example.guessit.presentation.Navigation.TICTACTOEONLINEMULTIPLAYERSCREEN
 import com.example.guessit.presentation.ViewModel.TicTacToeRoomCreateViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 
@@ -54,7 +53,7 @@ fun CreateTicTacToeRoom( viewmodel: TicTacToeRoomCreateViewModel= hiltViewModel(
 
     LaunchedEffect(createRoomstate.value) {
         createRoomstate.value.data?.let {
-            navController.navigate(TICTACTOEMULTIPLAYEROFFLINE)
+            navController.navigate(TICTACTOEONLINEMULTIPLAYERSCREEN)
         }
 
     }
@@ -127,7 +126,7 @@ fun CreateTicTacToeRoom( viewmodel: TicTacToeRoomCreateViewModel= hiltViewModel(
             Button(
                 onClick = {
                     val ticTacToeData = TicTacToeDataClass(
-                        player1 = userID.value
+                        player1LeaderUID = userID.value
                     )
                    viewmodel.createTicTacToeRoom(playerName = userName.value)
 

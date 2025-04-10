@@ -5,6 +5,7 @@ import com.example.guessit.data.RepoIMPL.GetPlayersRepositoryImpl
 import com.example.guessit.data.RepoIMPL.GetRealTimeLinesRepositoryImpl
 import com.example.guessit.data.RepoIMPL.JoinRoomRepositoryimpl
 import com.example.guessit.data.RepoIMPL.MessageRepositoryImpl
+import com.example.guessit.data.RepoIMPL.TicTacToeInteractionRepoImpl
 import com.example.guessit.data.RepoIMPL.TicTacToeRoomCreateRepoImpl
 import com.example.guessit.data.RepoIMPL.UploadLinesRepositoryImpl
 import com.example.guessit.data.RepoIMPL.UserAuthRepositoryImpl
@@ -14,6 +15,7 @@ import com.example.guessit.domain.Repository.GetPlayersRepository
 import com.example.guessit.domain.Repository.GetRealTimeLinesRepository
 import com.example.guessit.domain.Repository.JoinRoomRepository
 import com.example.guessit.domain.Repository.MessagesRepository
+import com.example.guessit.domain.Repository.TicTacToeInteractionRepository
 import com.example.guessit.domain.Repository.TicTacToeRoomCreateRepository
 import com.example.guessit.domain.Repository.UploadLinesRepository
 import com.example.guessit.domain.Repository.UserAuthenticationRepository
@@ -23,11 +25,13 @@ import com.example.guessit.domain.UseCases.CreateTicTacToeRoomUseCase
 import com.example.guessit.domain.UseCases.GetAllMessageFromRoomUseCase
 import com.example.guessit.domain.UseCases.GetAllPlayersFromRoomUseCase
 import com.example.guessit.domain.UseCases.GetRealTimeLineUseCase
+import com.example.guessit.domain.UseCases.GetTicTacToeDataUseCase
 import com.example.guessit.domain.UseCases.GetWordFromServerUseCase
 import com.example.guessit.domain.UseCases.JoinRoomWithIDUseCase
 import com.example.guessit.domain.UseCases.LoginUserUseCase
 import com.example.guessit.domain.UseCases.SendMessageToAllRoomMemberUseCase
 import com.example.guessit.domain.UseCases.SignUpUserUseCase
+import com.example.guessit.domain.UseCases.UpdateTicTacToeDataUseCase
 import com.example.guessit.domain.UseCases.UploadAllPlayersCanvasPoints
 import com.example.guessit.domain.UseCases.UploadLineToRealTimeDataBaseUseCase
 import com.example.guessit.domain.UseCases.UseCasesAccess
@@ -76,7 +80,11 @@ object DiModule {
             uploadAllPlayersCanvasPoints = UploadAllPlayersCanvasPoints(repository =provideUploadLinesRepoImplObject()),
             uploadLineToRealTimeDataBaseUseCase = UploadLineToRealTimeDataBaseUseCase(repository = provideUploadLinesRepoImplObject()),
             signUpUserUseCase = SignUpUserUseCase(repository = provideUserAuthInterfaceInstance()),
-            createTicTacToeRoom = CreateTicTacToeRoomUseCase(repository = provideTicTacToeRoomCreateInterfaceObject())
+            createTicTacToeRoom = CreateTicTacToeRoomUseCase(repository = provideTicTacToeRoomCreateInterfaceObject()),
+            getTicTacToeDAtaUsecase = GetTicTacToeDataUseCase(repository =provideTicTacToeInteractionRepositoryObject()),
+            updateTicTacToeDataUseCase = UpdateTicTacToeDataUseCase(
+                repository = provideTicTacToeInteractionRepositoryObject()
+            )
         )
     }
 
@@ -140,6 +148,14 @@ object DiModule {
     fun provideTicTacToeRoomCreateInterfaceObject(): TicTacToeRoomCreateRepository{
         return TicTacToeRoomCreateRepoImpl(firebaseAuth = provideAuthInstance(),
             firebaseFireStore = providefirebasefirestore())
+    }
+
+    fun provideTicTacToeInteractionRepositoryObject(): TicTacToeInteractionRepository{
+        return TicTacToeInteractionRepoImpl(
+            authInstance = provideAuthInstance(),
+            firebaseFirestore = providefirebasefirestore(),
+            firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase()
+        )
     }
 
 }

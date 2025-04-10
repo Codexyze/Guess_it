@@ -20,6 +20,7 @@ import com.example.guessit.presentation.Screens.PlayScreen
 import com.example.guessit.presentation.Screens.SignUpScreen
 import com.example.guessit.presentation.Screens.TicTacToeCreateRoomScreen
 import com.example.guessit.presentation.Screens.TicTacToeOffline
+import com.example.guessit.presentation.Screens.TicTacToeOnlineMultiplayerScreen
 import com.example.guessit.presentation.Screens.TicTacToeSelectionScreen
 import com.google.firebase.auth.FirebaseAuth
 @Preview(showBackground = true)
@@ -78,6 +79,9 @@ fun MyApp () {
         }
         composable<CREATEORJOINTICTACTOESCREEN>{
             CreateOrJoinSelectionScreen(navController = navController)
+        }
+        composable<TICTACTOEONLINEMULTIPLAYERSCREEN>{
+            TicTacToeOnlineMultiplayerScreen(navController = navController)
         }
 
     }

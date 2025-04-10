@@ -20,7 +20,7 @@ class TicTacToeRoomCreateRepoImpl @Inject constructor (
 
     override suspend fun ticTacToeCreateRoom(playerName: String): Flow<ResultState<String>> = callbackFlow{
         val ticTacToeData = TicTacToeDataClass(
-            player1 = currentUserAuth
+            player1LeaderUID = currentUserAuth
             , player1name = playerName
         )
         trySend(ResultState.Loading)
