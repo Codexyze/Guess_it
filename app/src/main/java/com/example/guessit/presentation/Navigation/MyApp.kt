@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.guessit.presentation.Screens.CreateOrJoinSelectionScreen
 import com.example.guessit.presentation.Screens.CreateRoomScreen
+import com.example.guessit.presentation.Screens.CreateTicTacToeRoom
 import com.example.guessit.presentation.Screens.HomeScreen
 import com.example.guessit.presentation.Screens.JoinRoomScreen
 import com.example.guessit.presentation.Screens.LoginScreen
@@ -73,7 +74,7 @@ fun MyApp () {
             TicTacToeOffline()
         }
         composable<TICTACTOECREATEROOMSCREEN>{
-            TicTacToeCreateRoomScreen()
+            CreateTicTacToeRoom(navController = navController)
         }
         composable<CREATEORJOINTICTACTOESCREEN>{
             CreateOrJoinSelectionScreen(navController = navController)

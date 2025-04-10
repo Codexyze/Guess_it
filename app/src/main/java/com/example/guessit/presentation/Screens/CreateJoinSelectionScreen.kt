@@ -17,13 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.guessit.R
+import com.example.guessit.presentation.Navigation.TICTACTOECREATEROOMSCREEN
 
 
 @Composable
 fun CreateOrJoinSelectionScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         OutlinedButton(onClick = {
-            //
+            navController.navigate(TICTACTOECREATEROOMSCREEN)
 
         }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.ThemeMatchingYellow))

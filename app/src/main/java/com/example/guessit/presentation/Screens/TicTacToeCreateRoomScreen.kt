@@ -39,35 +39,31 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
-import com.example.guessit.data.dataClasses.Player
-import com.example.guessit.presentation.Navigation.PLAYSCREEN
-import com.example.guessit.presentation.ViewModel.CreateRoomViewModel
-import com.google.firebase.auth.FirebaseAuth
+import com.example.guessit.data.dataClasses.TicTacToe.TicTacToeDataClass
+import com.example.guessit.presentation.Navigation.TICTACTOEMULTIPLAYEROFFLINE
+import com.example.guessit.presentation.ViewModel.TicTacToeRoomCreateViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
-fun CreateTicTacToeRoom(viewmodel: CreateRoomViewModel = hiltViewModel(), navController: NavController) {
+fun CreateTicTacToeRoom( viewmodel: TicTacToeRoomCreateViewModel= hiltViewModel(), navController: NavController) {
     val clipboardManager = LocalClipboardManager.current
     val userID = remember { mutableStateOf("") }
     val userName = remember { mutableStateOf("") }
-    val createRoomState = viewmodel.createRoomState.collectAsState()
     val context = LocalContext.current
+    val  createRoomstate = viewmodel.createRoomTicTacToeState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        userID.value = FirebaseAuth.getInstance().currentUser?.uid.toString()
-    }
-
-    LaunchedEffect(createRoomState.value) {
-        createRoomState.value.data?.let {
-            navController.navigate(PLAYSCREEN(roomID = userID.value, name = userName.value))
+    LaunchedEffect(createRoomstate.value) {
+        createRoomstate.value.data?.let {
+            navController.navigate(TICTACTOEMULTIPLAYEROFFLINE)
         }
+
     }
 
-    if (createRoomState.value.isLoading) {
+    if (createRoomstate.value.isLoading){
         LoadingBar()
-    } else if (createRoomState.value.error != null) {
-        Toast.makeText(context, createRoomState.value.error.toString(), Toast.LENGTH_SHORT).show()
-    } else {
+    }else if (createRoomstate.value.error != null) {
+        Toast.makeText(context, createRoomstate.value.error.toString(), Toast.LENGTH_SHORT).show()
+    }else{
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -130,24 +126,11 @@ fun CreateTicTacToeRoom(viewmodel: CreateRoomViewModel = hiltViewModel(), navCon
 
             Button(
                 onClick = {
-                    try {
-                        val player = Player(
-                            userID = userID.value,
-                            score = 0,
-                            totalGuess = 0,
-                            postion = 0,
-                            userName = userName.value,
-                            isLeader = true,
-                            noOfPlayers = 2 // Modify later
-                        )
-                        Log.d("ButtonClick", "Creating room for player: $player")
-                        viewmodel.createRoom(player = player)
-                        if (viewmodel.createRoomState.value.data != null) {
-                            navController.navigate(PLAYSCREEN(roomID = userID.value, name = userName.value))
-                        }
-                    } catch (e: Exception) {
-                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                    }
+                    val ticTacToeData = TicTacToeDataClass(
+                        player1 = userID.value
+                    )
+                   viewmodel.createTicTacToeRoom(playerName = userName.value)
+
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
@@ -157,4 +140,7 @@ fun CreateTicTacToeRoom(viewmodel: CreateRoomViewModel = hiltViewModel(), navCon
             }
         }
     }
+
 }
+
+

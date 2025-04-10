@@ -19,6 +19,7 @@ import com.example.guessit.domain.Repository.UploadLinesRepository
 import com.example.guessit.domain.Repository.UserAuthenticationRepository
 import com.example.guessit.domain.Repository.WordsRepository
 import com.example.guessit.domain.UseCases.CreateRoomFromServerUseCase
+import com.example.guessit.domain.UseCases.CreateTicTacToeRoomUseCase
 import com.example.guessit.domain.UseCases.GetAllMessageFromRoomUseCase
 import com.example.guessit.domain.UseCases.GetAllPlayersFromRoomUseCase
 import com.example.guessit.domain.UseCases.GetRealTimeLineUseCase
@@ -50,10 +51,6 @@ object DiModule {
         return FirebaseAuth.getInstance()
     }
 
-//    @Provides
-//    fun provideRepoImplInstnace(authInstance:FirebaseAuth): RepositoryImpl{
-//        return RepositoryImpl( authInstance = authInstance , firebaseFirestore = providefirebasefirestore(), firebaseRealtimeDatabase = provideFirebaseRealTimeDataBase())
-//    }
 
     @Provides
     fun providefirebasefirestore():FirebaseFirestore{
@@ -78,7 +75,8 @@ object DiModule {
             sendMessageToAllRoomMemberUseCase = SendMessageToAllRoomMemberUseCase(repository = provideMessageRepositoryInterfaceObject()),
             uploadAllPlayersCanvasPoints = UploadAllPlayersCanvasPoints(repository =provideUploadLinesRepoImplObject()),
             uploadLineToRealTimeDataBaseUseCase = UploadLineToRealTimeDataBaseUseCase(repository = provideUploadLinesRepoImplObject()),
-            signUpUserUseCase = SignUpUserUseCase(repository = provideUserAuthInterfaceInstance())
+            signUpUserUseCase = SignUpUserUseCase(repository = provideUserAuthInterfaceInstance()),
+            createTicTacToeRoom = CreateTicTacToeRoomUseCase(repository = provideTicTacToeRoomCreateInterfaceObject())
         )
     }
 

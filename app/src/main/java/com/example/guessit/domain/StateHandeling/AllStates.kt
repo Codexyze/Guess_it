@@ -72,3 +72,9 @@ data class GetAllMessageFromRoomState(
     val data:List<Message> = emptyList(),
     val error:String ? = null
 )
+
+data class CreateRoomTicTacToeState(
+    val isLoading: Boolean = false,
+    val data: String ? = null,
+    val error: String? =null
+)

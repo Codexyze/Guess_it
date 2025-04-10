@@ -11,5 +11,6 @@ data class UseCasesAccess(
     val sendMessageToAllRoomMemberUseCase: SendMessageToAllRoomMemberUseCase,
     val uploadAllPlayersCanvasPoints: UploadAllPlayersCanvasPoints,
    val uploadLineToRealTimeDataBaseUseCase: UploadLineToRealTimeDataBaseUseCase,
-    val signUpUserUseCase: SignUpUserUseCase
+    val signUpUserUseCase: SignUpUserUseCase,
+    val createTicTacToeRoom : CreateTicTacToeRoomUseCase
 )
