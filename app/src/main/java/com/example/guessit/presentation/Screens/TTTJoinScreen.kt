@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -30,30 +29,28 @@ import com.example.guessit.R
 import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.presentation.Navigation.PLAYSCREEN
 import com.example.guessit.presentation.Navigation.TICTACTOEONLINEMULTIPLAYERSCREEN
-import com.example.guessit.presentation.ViewModel.JoinRoomViewModel
-import com.google.firebase.auth.FirebaseAuth
+import com.example.guessit.presentation.ViewModel.TicTacToeRoomCreateViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
-fun JoinRoomScreen(
-    navController: NavController,
-    viewmodel: JoinRoomViewModel = hiltViewModel()
-) {
-    val currentuser = FirebaseAuth.getInstance().currentUser?.uid
-    val joinRoomState = viewmodel.joinRoomState.collectAsState()
+fun TTTJoinScreen(viewmodel:TicTacToeRoomCreateViewModel= hiltViewModel(),navController: NavController) {
     val roomID = remember { mutableStateOf("") }
     val userName = remember { mutableStateOf("") }
+    val joinState = viewmodel.joinTTTRoomState.collectAsState()
     val context = LocalContext.current
-    if (joinRoomState.value.isLoading) {
+    LaunchedEffect(joinState.value) {
+        joinState.value.data?.let {
+            navController.navigate(TICTACTOEONLINEMULTIPLAYERSCREEN)
+        }
+    }
+
+    if(joinState.value.isLoading){
         LoadingBar()
-    } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    }else if(joinState.value.error != null){
+        //
+    }else{
+        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center
+            , horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "Join a Room",
                 style = MaterialTheme.typography.headlineMedium,
@@ -81,30 +78,17 @@ fun JoinRoomScreen(
 
             Button(
                 onClick = {
-                    if (roomID.value.isNotEmpty() && userName.value.isNotEmpty() && userName.value.length >= 5) {
-                        val player = Player(
-                            userID = currentuser.toString(),
-                            userName = userName.value
-                        )
-                        try {
-                            viewmodel.joinRoomUsingUserID(roomID = roomID.value, player = player)
-                            navController.navigate(PLAYSCREEN(roomID = roomID.value, name = userName.value)) {
-                                popUpTo(0)
-                            }
-                        } catch (e: Exception) {
-                            FancyToast.makeText(
-                                context, "Error",
-                                FancyToast.LENGTH_LONG,
-                                FancyToast.ERROR, false
-                            ).show()
-                        }
-                    } else {
+                    if(roomID.value.isNotEmpty() && userName.value.length >= 5 ){
+                       viewmodel.joinTicTacToeRoom(roomID = roomID.value , playerName = userName.value)
+                    }else{
                         FancyToast.makeText(
-                            context, "Enter all fields",
+                           context , "Enter all fields",
                             FancyToast.LENGTH_LONG,
                             FancyToast.ERROR, false
                         ).show()
                     }
+
+
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
@@ -112,6 +96,7 @@ fun JoinRoomScreen(
             ) {
                 Text(text = "JOIN ROOM", fontWeight = FontWeight.Bold)
             }
+
         }
     }
 }

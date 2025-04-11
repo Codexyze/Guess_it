@@ -78,3 +78,9 @@ data class CreateRoomTicTacToeState(
     val data: String ? = null,
     val error: String? =null
 )
+
+data class JoinTTTRoomState(
+    val isLoading: Boolean = false,
+    val data: String ? = null,
+    val error: String? =null
+)

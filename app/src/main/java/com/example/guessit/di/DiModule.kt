@@ -28,6 +28,7 @@ import com.example.guessit.domain.UseCases.GetRealTimeLineUseCase
 import com.example.guessit.domain.UseCases.GetTicTacToeDataUseCase
 import com.example.guessit.domain.UseCases.GetWordFromServerUseCase
 import com.example.guessit.domain.UseCases.JoinRoomWithIDUseCase
+import com.example.guessit.domain.UseCases.JoinTTTRoomWithIdUseCase
 import com.example.guessit.domain.UseCases.LoginUserUseCase
 import com.example.guessit.domain.UseCases.SendMessageToAllRoomMemberUseCase
 import com.example.guessit.domain.UseCases.SignUpUserUseCase
@@ -82,9 +83,8 @@ object DiModule {
             signUpUserUseCase = SignUpUserUseCase(repository = provideUserAuthInterfaceInstance()),
             createTicTacToeRoom = CreateTicTacToeRoomUseCase(repository = provideTicTacToeRoomCreateInterfaceObject()),
             getTicTacToeDAtaUsecase = GetTicTacToeDataUseCase(repository =provideTicTacToeInteractionRepositoryObject()),
-            updateTicTacToeDataUseCase = UpdateTicTacToeDataUseCase(
-                repository = provideTicTacToeInteractionRepositoryObject()
-            )
+            updateTicTacToeDataUseCase = UpdateTicTacToeDataUseCase(repository = provideTicTacToeInteractionRepositoryObject()),
+            joinTicTacToeUseCase = JoinTTTRoomWithIdUseCase(repository = provideTicTacToeInteractionRepositoryObject())
         )
     }
 

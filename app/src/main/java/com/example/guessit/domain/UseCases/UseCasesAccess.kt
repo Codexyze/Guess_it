@@ -14,6 +14,7 @@ data class UseCasesAccess(
     val signUpUserUseCase: SignUpUserUseCase,
     val createTicTacToeRoom : CreateTicTacToeRoomUseCase,
     val getTicTacToeDAtaUsecase:GetTicTacToeDataUseCase,
-    val updateTicTacToeDataUseCase: UpdateTicTacToeDataUseCase
+    val updateTicTacToeDataUseCase: UpdateTicTacToeDataUseCase,
+    val joinTicTacToeUseCase: JoinTTTRoomWithIdUseCase
 
 )

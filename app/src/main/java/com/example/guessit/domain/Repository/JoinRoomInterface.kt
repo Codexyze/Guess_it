@@ -5,5 +5,5 @@ import com.example.guessit.domain.StateHandeling.ResultState
 import kotlinx.coroutines.flow.Flow
 
 interface JoinRoomRepository {
-    suspend fun joinRoomWithID(roomID:String,player: Player):Flow<ResultState<String>>//
+    suspend fun joinRoomWithID(roomID: String, player: Player):Flow<ResultState<String>>//
 }

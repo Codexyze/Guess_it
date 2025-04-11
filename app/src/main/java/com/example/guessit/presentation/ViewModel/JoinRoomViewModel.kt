@@ -21,9 +21,9 @@ class JoinRoomViewModel @Inject constructor(
     private val _joinRoomState = MutableStateFlow(JoinRoomState())
     val joinRoomState = _joinRoomState.asStateFlow()
 
-    fun joinRoomUsingUserID(roomID:String ,player:Player){
+    fun joinRoomUsingUserID(roomID:String ,player: Player){
         viewModelScope.launch {
-            useCaseAcess.joinRoomWithIDUseCase.joinRoomWithIDUseCase(roomID = roomID, player = player).collectLatest {result->
+            useCaseAcess.joinRoomWithIDUseCase.joinRoomWithIDUseCase(roomID = roomID, player = player).collectLatest { result->
                 when(result){
                     is ResultState.Loading->{
                         _joinRoomState.value = JoinRoomState(isLoading = true)

@@ -2,8 +2,9 @@ package com.example.guessit.presentation.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.guessit.data.dataClasses.TicTacToe.TicTacToeDataClass
+import com.example.guessit.data.dataClasses.Player
 import com.example.guessit.domain.StateHandeling.CreateRoomTicTacToeState
+import com.example.guessit.domain.StateHandeling.JoinTTTRoomState
 import com.example.guessit.domain.StateHandeling.ResultState
 import com.example.guessit.domain.UseCases.UseCasesAccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,8 @@ import javax.inject.Inject
 class TicTacToeRoomCreateViewModel @Inject constructor(private val usecase: UseCasesAccess): ViewModel() {
     private val _createRoomTicTacToeState = MutableStateFlow(CreateRoomTicTacToeState())
      val createRoomTicTacToeState = _createRoomTicTacToeState.asStateFlow()
+    private val _joinTTTRoomState = MutableStateFlow(JoinTTTRoomState())
+    val joinTTTRoomState = _joinTTTRoomState.asStateFlow()
 
     fun createTicTacToeRoom(playerName: String){
        viewModelScope.launch {
@@ -37,6 +40,24 @@ class TicTacToeRoomCreateViewModel @Inject constructor(private val usecase: UseC
 
        }
 
+    }
+    fun joinTicTacToeRoom(roomID:String,playerName: String){
+
+        viewModelScope.launch {
+           usecase.joinTicTacToeUseCase .joinTTTRoomWithIdUseCase(roomID = roomID, playerName = playerName).collectLatest {result->
+               when(result){
+                   is ResultState.Loading->{
+                       _joinTTTRoomState.value = JoinTTTRoomState(isLoading = true)
+                   }
+                   is ResultState.Success->{
+                       _joinTTTRoomState.value = JoinTTTRoomState(isLoading = false,data = result.data)
+                   }
+                   is ResultState.Error->{
+                       _joinTTTRoomState.value = JoinTTTRoomState(isLoading = false, error = result.message)
+                   }
+               }
+           }
+        }
     }
 
 }

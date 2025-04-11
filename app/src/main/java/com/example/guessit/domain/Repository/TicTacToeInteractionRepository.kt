@@ -10,6 +10,6 @@ interface TicTacToeInteractionRepository {
 
     suspend fun updateTicTacToeData(ticTacToeData: TicTacToeDataClass):Flow<ResultState<String>>
 
-    //suspend fun joinRoomWithID(roomID:String):Flow<ResultState<String>>
+    suspend fun joinTTTRoomWithID(roomID:String,playerName: String):Flow<ResultState<String>>
 
 }

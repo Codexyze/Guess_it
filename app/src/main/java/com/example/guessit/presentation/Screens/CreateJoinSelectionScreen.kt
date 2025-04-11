@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.guessit.R
 import com.example.guessit.presentation.Navigation.TICTACTOECREATEROOMSCREEN
+import com.example.guessit.presentation.Navigation.TICTACTTOEJOINROOMSCREEN
 
 
 @Composable
@@ -36,7 +37,7 @@ fun CreateOrJoinSelectionScreen(navController: NavController) {
 
 
         OutlinedButton(onClick = {
-            //
+            navController.navigate(TICTACTTOEJOINROOMSCREEN)
 
 
         }, modifier = Modifier.fillMaxWidth().height(80.dp), shape = RectangleShape,

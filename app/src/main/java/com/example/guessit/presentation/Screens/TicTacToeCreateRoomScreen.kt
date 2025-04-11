@@ -41,15 +41,18 @@ import com.example.guessit.R
 import com.example.guessit.data.dataClasses.TicTacToe.TicTacToeDataClass
 import com.example.guessit.presentation.Navigation.TICTACTOEONLINEMULTIPLAYERSCREEN
 import com.example.guessit.presentation.ViewModel.TicTacToeRoomCreateViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
 
 @Composable
-fun CreateTicTacToeRoom( viewmodel: TicTacToeRoomCreateViewModel= hiltViewModel(), navController: NavController) {
+fun CreateTicTacToeRoom( viewmodel: TicTacToeRoomCreateViewModel= hiltViewModel(), navController: NavController ) {
     val clipboardManager = LocalClipboardManager.current
     val userID = remember { mutableStateOf("") }
     val userName = remember { mutableStateOf("") }
     val context = LocalContext.current
     val  createRoomstate = viewmodel.createRoomTicTacToeState.collectAsState()
+    val currentAuth = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    clipboardManager.setText(annotatedString = AnnotatedString(currentAuth))
 
     LaunchedEffect(createRoomstate.value) {
         createRoomstate.value.data?.let {

@@ -6,7 +6,7 @@ import com.example.guessit.domain.StateHandeling.ResultState
 import kotlinx.coroutines.flow.Flow
 
 class JoinRoomWithIDUseCase(private val repository: JoinRoomRepository) {
-    suspend fun joinRoomWithIDUseCase(roomID:String,player: Player):Flow<ResultState<String>>{
-        return repository.joinRoomWithID(roomID,player)
+    suspend fun joinRoomWithIDUseCase(roomID: String, player: Player):Flow<ResultState<String>>{
+        return repository.joinRoomWithID(roomID = roomID, player = player)
     }
 }

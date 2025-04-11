@@ -18,6 +18,7 @@ import com.example.guessit.presentation.Screens.MessageScreen
 import com.example.guessit.presentation.Screens.PaintScreen
 import com.example.guessit.presentation.Screens.PlayScreen
 import com.example.guessit.presentation.Screens.SignUpScreen
+import com.example.guessit.presentation.Screens.TTTJoinScreen
 import com.example.guessit.presentation.Screens.TicTacToeCreateRoomScreen
 import com.example.guessit.presentation.Screens.TicTacToeOffline
 import com.example.guessit.presentation.Screens.TicTacToeOnlineMultiplayerScreen
@@ -82,6 +83,9 @@ fun MyApp () {
         }
         composable<TICTACTOEONLINEMULTIPLAYERSCREEN>{
             TicTacToeOnlineMultiplayerScreen(navController = navController)
+        }
+        composable<TICTACTTOEJOINROOMSCREEN> {
+            TTTJoinScreen(navController = navController)
         }
 
     }
