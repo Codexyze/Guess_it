@@ -26,8 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.guessit.R
-import com.example.guessit.data.dataClasses.Player
-import com.example.guessit.presentation.Navigation.PLAYSCREEN
 import com.example.guessit.presentation.Navigation.TICTACTOEONLINEMULTIPLAYERSCREEN
 import com.example.guessit.presentation.ViewModel.TicTacToeRoomCreateViewModel
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -40,7 +38,7 @@ fun TTTJoinScreen(viewmodel:TicTacToeRoomCreateViewModel= hiltViewModel(),navCon
     val context = LocalContext.current
     LaunchedEffect(joinState.value) {
         joinState.value.data?.let {
-            navController.navigate(TICTACTOEONLINEMULTIPLAYERSCREEN)
+            navController.navigate(TICTACTOEONLINEMULTIPLAYERSCREEN(playerName = userName.value, roomID = roomID.value))
         }
     }
 

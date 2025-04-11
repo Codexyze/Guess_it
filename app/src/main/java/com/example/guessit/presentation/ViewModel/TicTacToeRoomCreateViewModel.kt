@@ -3,9 +3,12 @@ package com.example.guessit.presentation.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guessit.data.dataClasses.Player
+import com.example.guessit.data.dataClasses.TicTacToe.TicTacToeDataClass
 import com.example.guessit.domain.StateHandeling.CreateRoomTicTacToeState
+import com.example.guessit.domain.StateHandeling.GetTicTacToeDataState
 import com.example.guessit.domain.StateHandeling.JoinTTTRoomState
 import com.example.guessit.domain.StateHandeling.ResultState
+import com.example.guessit.domain.StateHandeling.UpdateTicTacToeDataState
 import com.example.guessit.domain.UseCases.UseCasesAccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +23,10 @@ class TicTacToeRoomCreateViewModel @Inject constructor(private val usecase: UseC
      val createRoomTicTacToeState = _createRoomTicTacToeState.asStateFlow()
     private val _joinTTTRoomState = MutableStateFlow(JoinTTTRoomState())
     val joinTTTRoomState = _joinTTTRoomState.asStateFlow()
+    private val _ticTacToeDataState = MutableStateFlow( GetTicTacToeDataState())
+    val ticTacToeDataState = _ticTacToeDataState.asStateFlow()
+    private val _updateTicTacToeDataState = MutableStateFlow(UpdateTicTacToeDataState())
+    val updateTicTacToeDataState = _updateTicTacToeDataState.asStateFlow()
 
     fun createTicTacToeRoom(playerName: String){
        viewModelScope.launch {
@@ -58,6 +65,45 @@ class TicTacToeRoomCreateViewModel @Inject constructor(private val usecase: UseC
                }
            }
         }
+    }
+
+    fun getTTTdataWithID(roomID: String){
+        viewModelScope.launch {
+            usecase.getTicTacToeDAtaUsecase.getTicTacToeDataUseCase(roomID = roomID).collectLatest {result->
+                when(result){
+                    is ResultState.Loading->{
+                        _ticTacToeDataState.value = GetTicTacToeDataState(isLoading = true)
+                    }
+                    is ResultState.Success->{
+                        _ticTacToeDataState.value = GetTicTacToeDataState(isLoading = false, data = result.data)
+                    }
+                    is ResultState.Error->{
+                        _ticTacToeDataState.value = GetTicTacToeDataState(isLoading = false, error = result.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateTicTacToeData(ticTacToeData: TicTacToeDataClass){
+        viewModelScope.launch {
+            usecase.updateTicTacToeDataUseCase.updateTicTacToeData(ticTacToeData = ticTacToeData).collectLatest {result->
+                when(result){
+
+                    is ResultState.Loading->{
+                        _updateTicTacToeDataState.value = UpdateTicTacToeDataState(isLoading = true)
+                    }
+                    is ResultState.Success->{
+                        _updateTicTacToeDataState.value = UpdateTicTacToeDataState(isLoading = false, data = result.data)
+                    }
+                    is ResultState.Error->{
+                        _updateTicTacToeDataState.value = UpdateTicTacToeDataState(isLoading = false, error = result.message)
+                    }
+                }
+
+            }
+        }
+
     }
 
 }

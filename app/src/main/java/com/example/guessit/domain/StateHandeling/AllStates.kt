@@ -3,6 +3,7 @@ package com.example.guessit.domain.StateHandeling
 import com.example.guessit.data.MessageDataClasses.Message
 import com.example.guessit.data.PainterDataClass.LiveLine
 import com.example.guessit.data.dataClasses.Player
+import com.example.guessit.data.dataClasses.TicTacToe.TicTacToeDataClass
 
 sealed class ResultState<out T>{
     object Loading : ResultState<Nothing>()
@@ -80,6 +81,18 @@ data class CreateRoomTicTacToeState(
 )
 
 data class JoinTTTRoomState(
+    val isLoading: Boolean = false,
+    val data: String ? = null,
+    val error: String? =null
+)
+
+data class GetTicTacToeDataState(
+    val isLoading: Boolean = false,
+    val data: TicTacToeDataClass ? = null,
+    val error: String? =null
+)
+
+data class UpdateTicTacToeDataState(
     val isLoading: Boolean = false,
     val data: String ? = null,
     val error: String? =null

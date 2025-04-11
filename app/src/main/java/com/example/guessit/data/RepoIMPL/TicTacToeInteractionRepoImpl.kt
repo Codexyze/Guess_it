@@ -67,7 +67,14 @@ class TicTacToeInteractionRepoImpl @Inject constructor(private val authInstance:
 
         firebaseFirestore.collection(Constants.TICTACTOEROOM).document(roomID).collection(Constants.PLAYERS)
             .document(roomID).update("player2name",playerName).addOnSuccessListener {
-                    trySend(ResultState.Success("Joined Successfully"))
+                firebaseFirestore.collection(Constants.TICTACTOEROOM).document(roomID).collection(Constants.PLAYERS)
+                    .document(roomID).update("player2UID",authInstance.uid?:"").addOnSuccessListener {
+                        trySend(ResultState.Success("Joined Successfully"))
+                    }.addOnFailureListener {
+                        trySend(ResultState.Error(it.message.toString()))
+                        Log.d("FireBase","failed to Joined ${it.message}")
+                    }
+
                 Log.d("FireBase","SuccesJoined")
             }.addOnFailureListener {
                 trySend(ResultState.Error(it.message.toString()))

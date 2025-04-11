@@ -81,8 +81,9 @@ fun MyApp () {
         composable<CREATEORJOINTICTACTOESCREEN>{
             CreateOrJoinSelectionScreen(navController = navController)
         }
-        composable<TICTACTOEONLINEMULTIPLAYERSCREEN>{
-            TicTacToeOnlineMultiplayerScreen(navController = navController)
+        composable<TICTACTOEONLINEMULTIPLAYERSCREEN>{backStackentry->
+            val data:TICTACTOEONLINEMULTIPLAYERSCREEN = backStackentry.toRoute()
+            TicTacToeOnlineMultiplayerScreen(navController = navController, playerName = data.playerName, roomID = data.roomID)
         }
         composable<TICTACTTOEJOINROOMSCREEN> {
             TTTJoinScreen(navController = navController)

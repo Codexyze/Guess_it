@@ -56,7 +56,7 @@ fun CreateTicTacToeRoom( viewmodel: TicTacToeRoomCreateViewModel= hiltViewModel(
 
     LaunchedEffect(createRoomstate.value) {
         createRoomstate.value.data?.let {
-            navController.navigate(TICTACTOEONLINEMULTIPLAYERSCREEN)
+            navController.navigate(TICTACTOEONLINEMULTIPLAYERSCREEN(playerName = userName.value, roomID = currentAuth))
         }
 
     }
